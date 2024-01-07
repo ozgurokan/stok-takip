@@ -20,10 +20,10 @@ public class Urun {
     private String barkodAnaOnEk;
     private int birimKodId;
     private int minimumStokSeviye;
-    private String resim1;
-    private String resim2;
-    private String resim3;
-    private String resim4;
+    private byte[] resim1;
+    private byte[] resim2;
+    private byte[] resim3;
+    private byte[] resim4;
 
     public Urun(UrunBuilder urunBuilder){
         this.id = urunBuilder.id;
@@ -132,19 +132,19 @@ public class Urun {
         return minimumStokSeviye;
     }
 
-    public String getResim1() {
+    public byte[] getResim1() {
         return resim1;
     }
 
-    public String getResim2() {
+    public byte[] getResim2() {
         return resim2;
     }
 
-    public String getResim3() {
+    public byte[] getResim3() {
         return resim3;
     }
 
-    public String getResim4() {
+    public byte[] getResim4() {
         return resim4;
     }
 
@@ -167,10 +167,10 @@ public class Urun {
         private String barkodAnaOnEk;
         private int birimKodId;
         private int minimumStokSeviye;
-        private String resim1;
-        private String resim2;
-        private String resim3;
-        private String resim4;
+        private byte[] resim1;
+        private byte[] resim2;
+        private byte[] resim3;
+        private byte[] resim4;
 
         public UrunBuilder(int durum,String kod,String isim){
              this.durum = durum;
@@ -237,22 +237,22 @@ public class Urun {
 
         }
 
-        public UrunBuilder setResim1(String resim1) {
+        public UrunBuilder setResim1(byte[] resim1) {
             this.resim1 = resim1;
             return this;
         }
 
-        public UrunBuilder setResim2(String resim2) {
+        public UrunBuilder setResim2(byte[] resim2) {
             this.resim2 = resim2;
             return this;
         }
 
-        public UrunBuilder setResim3(String resim3) {
+        public UrunBuilder setResim3(byte[] resim3) {
             this.resim3 = resim3;
             return this;
         }
 
-        public UrunBuilder setResim4(String resim4) {
+        public UrunBuilder setResim4(byte[] resim4) {
             this.resim4 = resim4;
             return this;
         }

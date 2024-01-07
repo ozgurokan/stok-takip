@@ -2,6 +2,7 @@ package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.config.KDV;
 import com.ozgurokanozdal.entity.*;
+import com.ozgurokanozdal.helper.ImageHelper;
 import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIValidate;
 import com.ozgurokanozdal.services.ItemService;
@@ -10,8 +11,10 @@ import com.ozgurokanozdal.services.UreticiService;
 import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class UrunKontrol extends JFrame {
     private JPanel wrapper;
@@ -66,7 +69,7 @@ public class UrunKontrol extends JFrame {
     private JPanel pnl_gorsel2;
     private JPanel pnl_gorsel3;
     private JPanel pnl_gorsel4;
-    private JPanel pnl_gorsel1_label_wrapper;
+    private JPanel pnl_gorsel_image;
     private JPanel pnl_gorsel2_label_wrapper;
     private JPanel pnl_gorsel3_label_wrapper;
     private JPanel pnl_gorsel4_label_wrapper;
@@ -76,6 +79,10 @@ public class UrunKontrol extends JFrame {
     private JButton btn_gorsel2_degistir;
     private JButton btn_gorsel3_degistir;
     private JButton btn_gorsel4_degistir;
+    private JLabel lbl_gorsel2;
+    private JLabel lbl_gorsel1;
+    private JLabel lbl_gorsel3;
+    private JLabel lbl_gorsel4;
 
 
     // ++++++ ile başlayan yorum satırları alt sınırların başlangıcı
@@ -146,10 +153,28 @@ public class UrunKontrol extends JFrame {
             }
         });
 
+
+
         cmb_kategoriAna.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadKategoriAltCMB(getComboItemKey(cmb_kategoriAna));
+            }
+        });
+
+
+        // GÖRSELLER
+        btn_gorsel1_degistir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+
+                    lbl_gorsel1.setIcon(new ImageIcon(ImageHelper.resizeImage(ImageHelper.imageChooser())));
+
+                } catch (IOException ex) {
+                    UIDialog.showMessage("Lütfen sadece JPG ve PNG uzantılı dosyalar seçin!");
+                    throw new RuntimeException(ex);
+                }
             }
         });
     }
