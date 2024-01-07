@@ -104,14 +104,14 @@ public class Urunler extends JFrame {
         incele_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UrunKontrol urunKontrol = new UrunKontrol(2,urun_selected);
+                UIPages.newWindow(new UrunKontrol(2,urun_selected),thisFrame);
             }
         });
         // ---- KONTROL BUTTONS
         duzenle_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UrunKontrol urunKontrol = new UrunKontrol(1,urun_selected);
+                UIPages.newWindow(new UrunKontrol(1,urun_selected),thisFrame);
             }
         });
 

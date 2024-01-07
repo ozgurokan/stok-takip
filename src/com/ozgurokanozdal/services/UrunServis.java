@@ -5,10 +5,7 @@ import com.ozgurokanozdal.dto.TableItemUrun;
 import com.ozgurokanozdal.entity.Urun;
 import com.ozgurokanozdal.interfaces.IServis;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -111,8 +108,8 @@ public class UrunServis implements IServis<Urun> {
     @Override
     public boolean create(Urun entity) {
         String query = "INSERT INTO urunler " +
-                "(durum,kod,isim,kategori_ana_id,kategori_alt_id,uretici_id,spe_kod,kdv,odeme_tip_id,barkod_tip_id,barkod_uygulama_tipi,barkod_ana_on_ek,birim_kod_id,MINIMUM_STOK_SEVIYE) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                "(durum,kod,isim,kategori_ana_id,kategori_alt_id,uretici_id,spe_kod,kdv,odeme_tip_id,barkod_tip_id,barkod_uygulama_tipi,barkod_ana_on_ek,birim_kod_id,MINIMUM_STOK_SEVIYE,RESIM_1,RESIM_2,RESIM_3,RESIM_4) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         try{
             int i = 1;
             PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
@@ -130,11 +127,16 @@ public class UrunServis implements IServis<Urun> {
             pr.setString(i++,entity.getBarkodAnaOnEk());
             pr.setInt(i++,entity.getBirimKodId());
             pr.setInt(i++,entity.getMinimumStokSeviye());
+            pr.setString(i++,entity.getResim1());
+            pr.setString(i++,entity.getResim2());
+            pr.setString(i++,entity.getResim3());
+            pr.setString(i++,entity.getResim4());
 
             int response = pr.executeUpdate();
             return response != -1;
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -142,7 +144,30 @@ public class UrunServis implements IServis<Urun> {
 
     @Override
     public Urun getById(Long id) {
-        return null;
+        String query = "SELECT * FROM urunler WHERE ID = "+id;
+        Urun urun = new Urun();
+        try{
+            Statement st = DBConnector.getInstance().createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            if(rs.next()){
+                Urun urun1 = new Urun.UrunBuilder(rs.getInt(2),rs.getString(3),rs.getString(4)).setId(rs.getLong(1))
+                        .setKategoriAnaId(rs.getInt(5)).setKategoriAltId(rs.getInt(6)).setUreticiKodId(rs.getInt(7))
+                        .setSpeKod(rs.getString(8)).setKdv(rs.getInt(9)).setOdemeTipId(rs.getInt(10)).setBarkodTipId(rs.getInt(11))
+                        .setBarkodUygulamaTip(rs.getInt(12)).setBarkodAnaOnEk(rs.getString(13)).setBirimKodId(rs.getInt(14))
+                        .setMinimumStokSeviye(rs.getInt(15))
+                        .setResim1(rs.getString(16)).setResim2(rs.getString(17)).setResim3(rs.getString(18))
+                        .setResim4(rs.getString(19))
+                                .build();
+                st.close();
+                rs.close();
+                urun = urun1;
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return urun;
     }
 
     @Override
@@ -153,5 +178,14 @@ public class UrunServis implements IServis<Urun> {
     @Override
     public boolean deleteById(Long id) {
         return false;
+    }
+
+
+    private void imagePathSave(PreparedStatement pr,String str,int i) throws SQLException {
+        if(str != null){
+            pr.setString(i,str);
+        }else{
+            pr.setNull(i, Types.VARCHAR);
+        }
     }
 }

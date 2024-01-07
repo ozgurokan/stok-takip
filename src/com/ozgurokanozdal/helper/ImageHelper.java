@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.nio.file.Files;
 
 public class ImageHelper {
 
@@ -19,35 +20,28 @@ public class ImageHelper {
 
 
 
+    public static String imageChooser(){
 
-    public static File imageChooser(){
-
-        File image = null;
+        String image = null;
         chooser.setCurrentDirectory(imageFolder);
         chooser.setFileFilter(filter);
 
         int returnVal = chooser.showOpenDialog(null);
 
         if(returnVal == JFileChooser.APPROVE_OPTION) {
-            image = chooser.getSelectedFile();
+            image = chooser.getSelectedFile().getAbsolutePath();
         }
 
         return image;
 
     }
 
-    public static Image resizeImage(File file) throws IOException {
-        BufferedImage bufferedImage = ImageIO.read(file);
-        return bufferedImage.getScaledInstance(400,400,Image.SCALE_AREA_AVERAGING);
+    public static Image resizeImage(String filePath) throws IOException {
+        File image = new File(filePath);
+        BufferedImage bufferedImage = ImageIO.read(image);
+        return bufferedImage.getScaledInstance(300,400,Image.SCALE_AREA_AVERAGING);
     }
 
-    public static byte[] convertToBlob(ImageIcon icon){
-        byte[] imageToBlob= null;
-
-        // that's enough coding today...continue tomorrow. working with closed eyes is not a good way to improve yourself...
-        return imageToBlob;
-
-    }
 
 
 

@@ -17,6 +17,12 @@ public class UIPages {
                 frameParent.setEnabled(true);
             }
         });
+        frame1.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+                frameParent.setEnabled(true);
+            }
+        });
 
     }
 

@@ -14,7 +14,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class UrunKontrol extends JFrame {
     private JPanel wrapper;
@@ -84,6 +86,11 @@ public class UrunKontrol extends JFrame {
     private JLabel lbl_gorsel3;
     private JLabel lbl_gorsel4;
 
+    private String image1 = "";
+    private String image2 = "";
+    private String image3 = "";
+    private String image4 = "";
+
 
     // ++++++ ile başlayan yorum satırları alt sınırların başlangıcı
     // ------- ile başlayanlar alt sınırların bitişi
@@ -138,12 +145,16 @@ public class UrunKontrol extends JFrame {
                             .setUreticiKodId(getComboItemKey(cmb_ureticiKod))
                             .setSpeKod(fld_ozelKod.getText()).setKdv(getComboItemKey(cmb_kdvAlis)).setOdemeTipId(getComboItemKey(cmb_odemeTip))
                             .setBarkodTipId(getComboItemKey(cmb_barkodTip))
-                            .setBarkodUygulamaTip(0).setBarkodAnaOnEk("Burası boş dön").setBirimKodId(0)
-                            .setMinimumStokSeviye(0).build();
+                            .setBarkodUygulamaTip(0).setBirimKodId(0)
+                            .setMinimumStokSeviye(0).setResim1(image1).setResim2(image2).setResim3(image3).setResim4(image4).build();
+
+                    System.out.println(urunToSave.toString());
                     UrunServis.getInstance().create(urunToSave);
                     UIDialog.showMessage("done");
+                    dispose();
                     }catch (RuntimeException a){
                         UIDialog.showMessage("error");
+                        throw new RuntimeException(a);
                     }
                 }
 
@@ -167,21 +178,44 @@ public class UrunKontrol extends JFrame {
         btn_gorsel1_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                try {
+                image1 =  showImage(lbl_gorsel1);
+                System.out.println(image1);
+            }
+        });
+        btn_gorsel1_sil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteImage(lbl_gorsel1,image1);
+                System.out.println(image1);
+            }
+        });
 
-                    lbl_gorsel1.setIcon(new ImageIcon(ImageHelper.resizeImage(ImageHelper.imageChooser())));
+        btn_gorsel2_degistir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                image2 = showImage(lbl_gorsel2);
+            }
+        });
 
-                } catch (IOException ex) {
-                    UIDialog.showMessage("Lütfen sadece JPG ve PNG uzantılı dosyalar seçin!");
-                    throw new RuntimeException(ex);
-                }
+        btn_gorsel3_degistir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               image3 = showImage(lbl_gorsel3);
+            }
+        });
+
+        btn_gorsel4_degistir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               image4 = showImage(lbl_gorsel4);
             }
         });
     }
 
     private void getProdInfo(long id){
         Urun urun = UrunServis.getInstance().getById(id);
-        // fill fields
+        System.out.println(urun.toString());
+
 
     }
 
@@ -251,12 +285,31 @@ public class UrunKontrol extends JFrame {
         loadUreticiCMB();
         loadKDVCMB();
         loadStatuCMB();
+        loadKategoriAltCMB(getComboItemKey(cmb_kategoriAna));
     }
 
     private int getComboItemKey(JComboBox<Item> comboBox){
         return comboBox.getItemAt(comboBox.getSelectedIndex()).getKey();
     }
     // LOAD COMBO BOX--------------------
+
+    // IMAGE LOAD DELETE ++++++++++++++++
+    private String showImage(JLabel lbl){
+        String imagePath = ImageHelper.imageChooser();
+        try{
+            lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath)));
+        }catch (IOException ex){
+            UIDialog.showMessage("Hata!");
+        }
+        return imagePath;
+    }
+
+    private void deleteImage(JLabel lbl,String imagePath){
+        lbl.setIcon(null);
+        imagePath = "";
+    }
+
+    // IMAGE LOAD DELETE ----------------
 
 
 }
