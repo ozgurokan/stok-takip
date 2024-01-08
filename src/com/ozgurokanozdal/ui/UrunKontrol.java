@@ -113,7 +113,8 @@ public class UrunKontrol extends JFrame {
             setTitle("Ürün Güncelle");
         } else if (logic == 2) {
             getProdInfo(id);
-            disableAllFields();
+            setPanelEnabled(wrapper,false);
+            setPanelEnabled(pnl_alt,true);
             setTitle("Ürün İncele");
         }else{
             setTitle("Ürün Ekle");
@@ -124,13 +125,11 @@ public class UrunKontrol extends JFrame {
 
 
         // *********** PNL UST START **************
-        //++++++++++ kod_more event listener
 
-        //---------- kod_more event listener
 
         // *********** PNL UST END   **************
 
-
+        //************ PNL ALT START **************
         btn_kaydet.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,7 +163,7 @@ public class UrunKontrol extends JFrame {
             }
         });
 
-
+        //************ PNL ALT END **************
 
         cmb_kategoriAna.addActionListener(new ActionListener() {
             @Override
@@ -219,10 +218,7 @@ public class UrunKontrol extends JFrame {
 
     }
 
-    private void disableAllFields(){
 
-
-    }
 
 
     // LOAD COMBO BOX+++++++++++++++++++++++
@@ -310,6 +306,36 @@ public class UrunKontrol extends JFrame {
     }
 
     // IMAGE LOAD DELETE ----------------
+    private void setPanelEnabled(JPanel panel, Boolean isEnabled) {
 
+
+        Component[] components = panel.getComponents();
+
+        for (Component component : components) {
+
+            if (component instanceof JPanel) {
+                setPanelEnabled((JPanel) component, isEnabled);
+            }
+            if( component instanceof JTabbedPane){
+                Component[] components1 = ((JTabbedPane) component).getComponents();
+                for(Component component1 : components1){
+                    setPanelEnabled((JPanel) component1, isEnabled);
+                }
+            }
+            if(component instanceof JTextField){
+                ((JTextField) component).setEditable(isEnabled);
+            }
+            if(component instanceof JComboBox){
+                component.setEnabled(isEnabled);
+            }
+            if(component instanceof JButton){
+                component.setEnabled(isEnabled);
+            }
+            if(component instanceof JRadioButton){
+                component.setEnabled(isEnabled);
+            }
+
+        }
+    }
 
 }
