@@ -9,6 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class UrunServis implements IServis<Urun> {
 
@@ -171,21 +172,47 @@ public class UrunServis implements IServis<Urun> {
     }
 
     @Override
-    public Urun updateById(Long id) {
-        return null;
+    public boolean updateById(Long id,Urun entity) {
+        String query = "UPDATE urunler SET " +
+                "durum = ?,kod = ?,isim = ?,kategori_ana_id = ?,kategori_alt_id = ?,uretici_id = ?,spe_kod = ?,kdv = ?,odeme_tip_id = ?, " +
+                "barkod_tip_id = ? ,barkod_uygulama_tipi = ?, " +
+                "barkod_ana_on_ek = ?,birim_kod_id = ?,MINIMUM_STOK_SEVIYE = ?,RESIM_1 = ?,RESIM_2 = ?,RESIM_3 = ?,RESIM_4 = ? WHERE ID =" + id;
+
+        try{
+            int i = 1;
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            pr.setInt(i++,entity.getDurum());
+            pr.setString(i++,entity.getKod());
+            pr.setString(i++,entity.getIsim());
+            pr.setInt(i++,entity.getKategoriAnaId());
+            pr.setInt(i++,entity.getKategoriAltId());
+            pr.setInt(i++,entity.getUreticiKodId());
+            pr.setString(i++,entity.getSpeKod());
+            pr.setInt(i++,entity.getKdv());
+            pr.setInt(i++,entity.getOdemeTipId());
+            pr.setInt(i++,entity.getBarkodTipId());
+            pr.setInt(i++,entity.isBarkodUygulamaTip());
+            pr.setString(i++,entity.getBarkodAnaOnEk());
+            pr.setInt(i++,entity.getBirimKodId());
+            pr.setInt(i++,entity.getMinimumStokSeviye());
+            pr.setString(i++,entity.getResim1());
+            pr.setString(i++,entity.getResim2());
+            pr.setString(i++,entity.getResim3());
+            pr.setString(i++,entity.getResim4());
+
+            int response = pr.executeUpdate();
+            return response != -1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean deleteById(Long id) {
+
         return false;
     }
 
 
-    private void imagePathSave(PreparedStatement pr,String str,int i) throws SQLException {
-        if(str != null){
-            pr.setString(i,str);
-        }else{
-            pr.setNull(i, Types.VARCHAR);
-        }
-    }
 }

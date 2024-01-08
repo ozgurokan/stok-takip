@@ -10,7 +10,7 @@ public interface IServis<T> {
 
     public T getById(Long id);
 
-    public T updateById(Long id);
+    public boolean updateById(Long id, T entity);
 
     public boolean deleteById(Long id);
 

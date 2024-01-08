@@ -7,23 +7,23 @@ import java.awt.event.WindowEvent;
 public class UIPages {
 
 
-    public static void newWindow(JFrame frameChild,JFrame frameParent){
+    public static JFrame newWindow(JFrame frameChild,JFrame frameParent){
 
-        JFrame frame1 = frameChild;
         frameParent.setEnabled(false);
-        frame1.addWindowListener(new WindowAdapter() {
+        frameChild.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 frameParent.setEnabled(true);
             }
         });
-        frame1.addWindowListener(new WindowAdapter() {
+        frameChild.addWindowListener(new WindowAdapter() {
             @Override
             public void windowDeactivated(WindowEvent e) {
                 frameParent.setEnabled(true);
             }
         });
 
+        return frameChild;
     }
 
     public static void setLayout(){

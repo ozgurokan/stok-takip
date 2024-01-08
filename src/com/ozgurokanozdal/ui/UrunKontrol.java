@@ -14,9 +14,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class UrunKontrol extends JFrame {
     private JPanel wrapper;
@@ -81,6 +79,7 @@ public class UrunKontrol extends JFrame {
     private JLabel lbl_gorsel1;
     private JLabel lbl_gorsel3;
     private JLabel lbl_gorsel4;
+    private JButton btn_guncelle;
 
     private String image1 = "";
     private String image2 = "";
@@ -98,24 +97,30 @@ public class UrunKontrol extends JFrame {
 
 
         add(wrapper);
-        setSize(900,600);
-
+        setSize(1200,720);
+        setMinimumSize(new Dimension(1200,720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+
         initComboBoxes();
         cmb_odemeTip.setSelectedIndex(2);
         if(logic == 1){
             setTitle("Ürün Güncelle");
             loadProdInfo(id);
+            btn_kaydet.setEnabled(false);
+            btn_kaydet.setVisible(false);
+
         } else if (logic == 2) {
             setTitle("Ürün İncele");
             loadProdInfo(id);
             setPanelEnabled(wrapper,false);
             setPanelEnabled(pnl_alt,true);
             btn_kaydet.setVisible(false);
+            btn_guncelle.setVisible(false);
 
         }else{
             setTitle("Ürün Ekle");
+            btn_guncelle.setVisible(false);
         }
         
 
@@ -133,7 +138,7 @@ public class UrunKontrol extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 if(UIValidate.isFieldEmpty(fld_aciklama) || UIValidate.isFieldEmpty(fld_kod)){
-                    UIDialog.showMessage("Lütfen zorunlu alanları doldurun.");
+                    UIDialog.showMessage("Lütfen zorunlu alanları (*) doldurun.");
                 }else{
                     try{
 
@@ -157,6 +162,45 @@ public class UrunKontrol extends JFrame {
 
 
 
+
+            }
+        });
+
+        btn_guncelle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(UIValidate.isFieldEmpty(fld_aciklama) || UIValidate.isFieldEmpty(fld_kod)){
+                    UIDialog.showMessage("Lütfen zorunlu alanları (*) doldurun.");
+                }else{
+                    try{
+
+                        Urun urunToUpdate = new Urun.UrunBuilder(getComboItemKey(cmb_stat),fld_kod.getText(),fld_aciklama.getText())
+                                .setKategoriAnaId(getComboItemKey(cmb_kategoriAna)).setKategoriAltId(getComboItemKey(cmb_kategoriAlt))
+                                .setUreticiKodId(getComboItemKey(cmb_ureticiKod))
+                                .setSpeKod(fld_ozelKod.getText()).setKdv(getComboItemKey(cmb_kdvAlis)).setOdemeTipId(getComboItemKey(cmb_odemeTip))
+                                .setBarkodTipId(getComboItemKey(cmb_barkodTip))
+                                .setBarkodUygulamaTip(0).setBirimKodId(0)
+                                .setMinimumStokSeviye(0).setResim1(image1).setResim2(image2).setResim3(image3).setResim4(image4).build();
+
+                        UrunServis.getInstance().updateById(id,urunToUpdate);
+                        UIDialog.showMessage("Güncelleme İşlemi Başarılı");
+                        dispose();
+                    }catch (RuntimeException a){
+                        UIDialog.showMessage("Bir Hata Oluştu!");
+                        throw new RuntimeException(a);
+
+                    }
+                }
+            }
+        });
+
+        btn_vazgec.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(UIDialog.confirm("Emin misin?")){
+                    dispose();
+                }
 
             }
         });
@@ -193,6 +237,12 @@ public class UrunKontrol extends JFrame {
                 image2 = showImage(lbl_gorsel2,imageChooser(),"big");
             }
         });
+        btn_gorsel2_sil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteImage(lbl_gorsel2,image2);
+            }
+        });
 
         btn_gorsel3_degistir.addActionListener(new ActionListener() {
             @Override
@@ -201,10 +251,24 @@ public class UrunKontrol extends JFrame {
             }
         });
 
+        btn_gorsel3_sil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteImage(lbl_gorsel3,image3);
+            }
+        });
+
         btn_gorsel4_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                image4 = showImage(lbl_gorsel4,imageChooser(),"big");
+            }
+        });
+
+        btn_gorsel4_sil.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteImage(lbl_gorsel4,image4);
             }
         });
     }
@@ -218,7 +282,9 @@ public class UrunKontrol extends JFrame {
 
         loadKategoriAltCMB(urun.getKategoriAnaId());
 
-        cmb_stat.setSelectedIndex(urun.getDurum());
+        findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvAlis);
+        findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvSatis);
+        findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvIade);
         findAndSetSelectedItemCMB(urun.getKategoriAnaId(),cmb_kategoriAna);
         findAndSetSelectedItemCMB(urun.getKategoriAltId(),cmb_kategoriAlt);
         findAndSetSelectedItemCMB(urun.getOdemeTipId(),cmb_odemeTip);

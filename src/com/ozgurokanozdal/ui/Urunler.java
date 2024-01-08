@@ -30,7 +30,7 @@ public class Urunler extends JFrame {
 
     public Urunler(){
         add(wrapper);
-        setSize(1200,600);
+        setSize(1200,720);
         setTitle("Urunler");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
@@ -81,23 +81,25 @@ public class Urunler extends JFrame {
 
 
 
-        // *************************************************************************
+
         // EVENT LİSTENERS START-
-        // ++++ KONTROL BUTTONS
+        // ++++ KONTROL BUTTONLARI
         ekle_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-//               YeniGUI yeniGUI = new YeniGUI(0,0);
-//               setEnabled(false);
-//               yeniGUI.addWindowListener(new WindowAdapter() {
-//                   @Override
-//                   public void windowClosing(WindowEvent e) {
-//                       setEnabled(true);
-//                   }
-//               });
-                UIPages.newWindow(new UrunKontrol(0,0),thisFrame);
-                loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                UIPages.newWindow(new UrunKontrol(0,0),thisFrame).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                    }
+                });
+
 
             }
         });
@@ -106,18 +108,28 @@ public class Urunler extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIPages.newWindow(new UrunKontrol(2,urun_selected),thisFrame);
-                loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
-            }
-        });
-        // ---- KONTROL BUTTONS
-        duzenle_btn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunKontrol(1,urun_selected),thisFrame);
-                loadUrunList(-1,-1);
             }
         });
 
+
+        duzenle_btn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UIPages.newWindow(new UrunKontrol(1,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                    }
+
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                    }
+                });
+
+            }
+        });
+        // ---- KONTROL BUTTONLARI
 
         cmb_filterAPH.addActionListener(new ActionListener() {
             @Override
