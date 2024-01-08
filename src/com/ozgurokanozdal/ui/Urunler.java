@@ -188,8 +188,8 @@ public class Urunler extends JFrame {
     private void loadFilterDurumCMB(){
 
         cmb_filterAPH.addItem(new Item(-2,"HEPSI"));
-        cmb_filterAPH.addItem(new Item(0,"AKTIF"));
-        cmb_filterAPH.addItem(new Item(1,"PASIF"));
+        cmb_filterAPH.addItem(new Item(0,"P"));
+        cmb_filterAPH.addItem(new Item(1,"A"));
 
     }
 

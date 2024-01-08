@@ -3,7 +3,7 @@ package com.ozgurokanozdal.dto;
 public class TableItemUrun {
 
     private long id;
-    private int durum;
+    private String durum;
     private String kod;
     private String isim;
     private String kategoriAna;
@@ -14,7 +14,7 @@ public class TableItemUrun {
     public TableItemUrun() {
     }
 
-    public TableItemUrun(long id, int durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv) {
+    public TableItemUrun(long id, String durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv) {
         this.id = id;
         this.durum = durum;
         this.kod = kod;
@@ -33,11 +33,11 @@ public class TableItemUrun {
         this.id = id;
     }
 
-    public int getDurum() {
+    public String getDurum() {
         return durum;
     }
 
-    public void setDurum(int durum) {
+    public void setDurum(String durum) {
         this.durum = durum;
     }
 

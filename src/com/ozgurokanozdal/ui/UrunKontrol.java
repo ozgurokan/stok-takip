@@ -36,7 +36,7 @@ public class UrunKontrol extends JFrame {
     private JButton btn_grupKod_more;
     private JButton btn_ureticiKod_more;
     private JComboBox<Item> cmb_odemeTip;
-    private JComboBox<Item> cmb_stat;
+    private JComboBox<Durum> cmb_stat;
     private JPanel pnl_kod;
     private JPanel pnl_odeme;
     private JPanel pnl_kdv;
@@ -142,7 +142,7 @@ public class UrunKontrol extends JFrame {
                 }else{
                     try{
 
-                    Urun urunToSave = new Urun.UrunBuilder(getComboItemKey(cmb_stat),fld_kod.getText(),fld_aciklama.getText())
+                    Urun urunToSave = new Urun.UrunBuilder(cmb_stat.getItemAt(cmb_stat.getSelectedIndex()).getKod(),fld_kod.getText(),fld_aciklama.getText())
                             .setKategoriAnaId(getComboItemKey(cmb_kategoriAna)).setKategoriAltId(getComboItemKey(cmb_kategoriAlt))
                             .setUreticiKodId(getComboItemKey(cmb_ureticiKod))
                             .setSpeKod(fld_ozelKod.getText()).setKdv(getComboItemKey(cmb_kdvAlis)).setOdemeTipId(getComboItemKey(cmb_odemeTip))
@@ -175,7 +175,7 @@ public class UrunKontrol extends JFrame {
                 }else{
                     try{
 
-                        Urun urunToUpdate = new Urun.UrunBuilder(getComboItemKey(cmb_stat),fld_kod.getText(),fld_aciklama.getText())
+                        Urun urunToUpdate = new Urun.UrunBuilder(cmb_stat.getItemAt(cmb_stat.getSelectedIndex()).getKod(),fld_kod.getText(),fld_aciklama.getText())
                                 .setKategoriAnaId(getComboItemKey(cmb_kategoriAna)).setKategoriAltId(getComboItemKey(cmb_kategoriAlt))
                                 .setUreticiKodId(getComboItemKey(cmb_ureticiKod))
                                 .setSpeKod(fld_ozelKod.getText()).setKdv(getComboItemKey(cmb_kdvAlis)).setOdemeTipId(getComboItemKey(cmb_odemeTip))
@@ -274,6 +274,7 @@ public class UrunKontrol extends JFrame {
     }
 
     private void loadProdInfo(long id){
+        
         Urun urun = UrunServis.getInstance().getById(id);
         System.out.println(urun.toString());
         fld_kod.setText(urun.getKod());
@@ -282,6 +283,7 @@ public class UrunKontrol extends JFrame {
 
         loadKategoriAltCMB(urun.getKategoriAnaId());
 
+        findAndSetSelectedDurumCMB(urun.getDurum(),cmb_stat);
         findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvAlis);
         findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvSatis);
         findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvIade);
@@ -299,9 +301,6 @@ public class UrunKontrol extends JFrame {
         showImage(lbl_gorsel3,urun.getResim3(),"big");
         showImage(lbl_gorsel4,urun.getResim4(),"big");
 
-
-
-
     }
 
 
@@ -309,7 +308,6 @@ public class UrunKontrol extends JFrame {
 
     // LOAD COMBO BOX+++++++++++++++++++++++
     private void findAndSetSelectedItemCMB(int id,JComboBox<Item> comboBox){
-
         for(int i = 0; i< comboBox.getItemCount(); i++){
             if(comboBox.getItemAt(i).getKey() == id){
                 comboBox.setSelectedIndex(i);
@@ -317,6 +315,14 @@ public class UrunKontrol extends JFrame {
             }
         }
 
+    }
+    private void findAndSetSelectedDurumCMB(String durum,JComboBox<Durum> comboBox){
+        for(int i = 0; i< comboBox.getItemCount(); i++){
+            if(comboBox.getItemAt(i).getKod().equals(durum)){
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
     }
     private void loadOdemeTipCMB(){
         cmb_odemeTip.removeAllItems();
@@ -338,8 +344,8 @@ public class UrunKontrol extends JFrame {
 
     private void loadStatuCMB(){
 
-        cmb_stat.addItem(new Item(0,"PASIF"));
-        cmb_stat.addItem(new Item(1,"AKTIF"));
+        cmb_stat.addItem(new Durum("P","PASIF"));
+        cmb_stat.addItem(new Durum("A","AKTIF"));
     }
 
     private void loadBarkodTipCMB(){
@@ -385,6 +391,7 @@ public class UrunKontrol extends JFrame {
     private int getComboItemKey(JComboBox<Item> comboBox){
         return comboBox.getItemAt(comboBox.getSelectedIndex()).getKey();
     }
+
     // LOAD COMBO BOX--------------------
 
     // IMAGE LOAD DELETE ++++++++++++++++

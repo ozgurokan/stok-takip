@@ -4,7 +4,7 @@ public class Urun {
 
     // required
     private long id;
-    private int durum;
+    private String durum;
     private String kod;
     private String isim;
 
@@ -79,7 +79,7 @@ public class Urun {
         return id;
     }
 
-    public int getDurum() {
+    public String getDurum() {
         return durum;
     }
 
@@ -154,7 +154,7 @@ public class Urun {
     public static class UrunBuilder {
         // required
         private long id;
-        private int durum;
+        private String durum;
         private String kod;
         private String isim;
 
@@ -175,7 +175,7 @@ public class Urun {
         private String resim3;
         private String resim4;
 
-        public UrunBuilder(int durum,String kod,String isim){
+        public UrunBuilder(String durum,String kod,String isim){
              this.durum = durum;
              this.kod = kod;
              this.isim = isim;
