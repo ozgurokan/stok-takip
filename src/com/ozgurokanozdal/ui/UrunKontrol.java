@@ -29,13 +29,10 @@ public class UrunKontrol extends JFrame {
     private JTextField fld_kod;
     private JTextField fld_aciklama;
     private JButton btn_kod_more;
-    private JButton button2;
-    private JButton button3;
     private JButton btn_kaydet;
     private JButton btn_vazgec;
     private JTextField fld_ozelKod;
     private JButton btn_ozelKod_more;
-    private JTextField fld_yetkiKod;
     private JComboBox<Item> cmb_kategoriAna;
     private JComboBox<Item> cmb_ureticiKod;
     private JButton btn_grupKod_more;
@@ -45,10 +42,9 @@ public class UrunKontrol extends JFrame {
     private JPanel pnl_kod;
     private JPanel pnl_odeme;
     private JPanel pnl_kdv;
-    private JTextField fld_rafOmru;
-    private JTextField fld_kdv_alis;
-    private JTextField fld_kdv_satis;
-    private JTextField fld_kdv_iade;
+
+
+
     private JPanel pnl_ust_sol;
     private JPanel pnl_ust_sag;
     private JPanel pnl_fotograf_1;
@@ -109,13 +105,15 @@ public class UrunKontrol extends JFrame {
         initComboBoxes();
         cmb_odemeTip.setSelectedIndex(2);
         if(logic == 1){
-            getProdInfo(id);
             setTitle("Ürün Güncelle");
+            loadProdInfo(id);
         } else if (logic == 2) {
-            getProdInfo(id);
+            setTitle("Ürün İncele");
+            loadProdInfo(id);
             setPanelEnabled(wrapper,false);
             setPanelEnabled(pnl_alt,true);
-            setTitle("Ürün İncele");
+            btn_kaydet.setVisible(false);
+
         }else{
             setTitle("Ürün Ekle");
         }
@@ -177,7 +175,7 @@ public class UrunKontrol extends JFrame {
         btn_gorsel1_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                image1 =  showImage(lbl_gorsel1);
+                image1 =  showImage(lbl_gorsel1,imageChooser(),"big");
                 System.out.println(image1);
             }
         });
@@ -192,28 +190,50 @@ public class UrunKontrol extends JFrame {
         btn_gorsel2_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                image2 = showImage(lbl_gorsel2);
+                image2 = showImage(lbl_gorsel2,imageChooser(),"big");
             }
         });
 
         btn_gorsel3_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               image3 = showImage(lbl_gorsel3);
+               image3 = showImage(lbl_gorsel3,imageChooser(),"big");
             }
         });
 
         btn_gorsel4_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               image4 = showImage(lbl_gorsel4);
+               image4 = showImage(lbl_gorsel4,imageChooser(),"big");
             }
         });
     }
 
-    private void getProdInfo(long id){
+    private void loadProdInfo(long id){
         Urun urun = UrunServis.getInstance().getById(id);
         System.out.println(urun.toString());
+        fld_kod.setText(urun.getKod());
+        fld_aciklama.setText(urun.getIsim());
+        fld_ozelKod.setText(urun.getSpeKod());
+
+        loadKategoriAltCMB(urun.getKategoriAnaId());
+
+        cmb_stat.setSelectedIndex(urun.getDurum());
+        findAndSetSelectedItemCMB(urun.getKategoriAnaId(),cmb_kategoriAna);
+        findAndSetSelectedItemCMB(urun.getKategoriAltId(),cmb_kategoriAlt);
+        findAndSetSelectedItemCMB(urun.getOdemeTipId(),cmb_odemeTip);
+        findAndSetSelectedItemCMB(urun.getUreticiKodId(),cmb_ureticiKod);
+        findAndSetSelectedItemCMB(urun.getBarkodTipId(),cmb_barkodTip);
+        findAndSetSelectedItemCMB(urun.getKdv(),cmb_kdvAlis);
+
+        showImage(urun_fotograf_1,urun.getResim1(),"small");
+        showImage(urun_fotograf_2,urun.getResim2(),"small");
+        showImage(lbl_gorsel1,urun.getResim1(),"big");
+        showImage(lbl_gorsel2,urun.getResim2(),"big");
+        showImage(lbl_gorsel3,urun.getResim3(),"big");
+        showImage(lbl_gorsel4,urun.getResim4(),"big");
+
+
 
 
     }
@@ -222,6 +242,16 @@ public class UrunKontrol extends JFrame {
 
 
     // LOAD COMBO BOX+++++++++++++++++++++++
+    private void findAndSetSelectedItemCMB(int id,JComboBox<Item> comboBox){
+
+        for(int i = 0; i< comboBox.getItemCount(); i++){
+            if(comboBox.getItemAt(i).getKey() == id){
+                comboBox.setSelectedIndex(i);
+                break;
+            }
+        }
+
+    }
     private void loadOdemeTipCMB(){
         cmb_odemeTip.removeAllItems();
         for(OdemeTip odemeTip : ItemService.getInstance().getAllOdemeTip()){
@@ -241,9 +271,9 @@ public class UrunKontrol extends JFrame {
     }
 
     private void loadStatuCMB(){
-        cmb_stat.addItem(new Item(1,"AKTIF"));
-        cmb_stat.addItem(new Item(0,"PASIF"));
 
+        cmb_stat.addItem(new Item(0,"PASIF"));
+        cmb_stat.addItem(new Item(1,"AKTIF"));
     }
 
     private void loadBarkodTipCMB(){
@@ -259,6 +289,7 @@ public class UrunKontrol extends JFrame {
         for(KategoriAna kategoriAna : KategoriService.getInstance().getAllKategoriAna()){
             cmb_kategoriAna.addItem(new Item(kategoriAna.getId(), kategoriAna.getName()));
         }
+
     }
 
     private void loadKategoriAltCMB(int parentId){
@@ -271,6 +302,7 @@ public class UrunKontrol extends JFrame {
         cmb_ureticiKod.removeAllItems();
         for(Uretici uretici : UreticiService.getInstance().getAllUretici()){
             cmb_ureticiKod.addItem(new Item(uretici.getId(), uretici.getName()));
+
         }
     }
 
@@ -290,12 +322,18 @@ public class UrunKontrol extends JFrame {
     // LOAD COMBO BOX--------------------
 
     // IMAGE LOAD DELETE ++++++++++++++++
-    private String showImage(JLabel lbl){
-        String imagePath = ImageHelper.imageChooser();
+    private String imageChooser(){
+        return ImageHelper.imageChooser();
+    }
+    private String showImage(JLabel lbl,String imagePath,String type){
         try{
-            lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath)));
+            switch (type) {
+                case "big" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath)));
+                case "small" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath, 100, 100)));
+            }
+
         }catch (IOException ex){
-            UIDialog.showMessage("Hata!");
+
         }
         return imagePath;
     }

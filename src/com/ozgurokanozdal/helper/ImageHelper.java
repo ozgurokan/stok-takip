@@ -39,7 +39,13 @@ public class ImageHelper {
     public static Image resizeImage(String filePath) throws IOException {
         File image = new File(filePath);
         BufferedImage bufferedImage = ImageIO.read(image);
-        return bufferedImage.getScaledInstance(300,400,Image.SCALE_AREA_AVERAGING);
+        return bufferedImage.getScaledInstance(200,250,Image.SCALE_AREA_AVERAGING);
+    }
+
+    public static Image resizeImage(String filePath,int width,int height) throws IOException {
+        File image = new File(filePath);
+        BufferedImage bufferedImage = ImageIO.read(image);
+        return bufferedImage.getScaledInstance(width,height,Image.SCALE_AREA_AVERAGING);
     }
 
 

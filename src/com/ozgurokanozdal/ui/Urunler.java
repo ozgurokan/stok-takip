@@ -97,6 +97,7 @@ public class Urunler extends JFrame {
 //                   }
 //               });
                 UIPages.newWindow(new UrunKontrol(0,0),thisFrame);
+                loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
 
             }
         });
@@ -105,6 +106,7 @@ public class Urunler extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIPages.newWindow(new UrunKontrol(2,urun_selected),thisFrame);
+                loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
             }
         });
         // ---- KONTROL BUTTONS
@@ -112,6 +114,7 @@ public class Urunler extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIPages.newWindow(new UrunKontrol(1,urun_selected),thisFrame);
+                loadUrunList(-1,-1);
             }
         });
 
