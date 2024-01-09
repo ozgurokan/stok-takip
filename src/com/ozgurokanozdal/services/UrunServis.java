@@ -8,8 +8,7 @@ import com.ozgurokanozdal.interfaces.IServis;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.logging.Logger;
+
 
 public class UrunServis implements IServis<Urun> {
 

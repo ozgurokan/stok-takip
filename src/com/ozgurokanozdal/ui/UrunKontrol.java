@@ -81,10 +81,10 @@ public class UrunKontrol extends JFrame {
     private JLabel lbl_gorsel4;
     private JButton btn_guncelle;
 
-    private String image1 = "";
-    private String image2 = "";
-    private String image3 = "";
-    private String image4 = "";
+    private String image1;
+    private String image2;
+    private String image3;
+    private String image4;
 
 
     // ++++++ ile başlayan yorum satırları alt sınırların başlangıcı
@@ -219,15 +219,15 @@ public class UrunKontrol extends JFrame {
         btn_gorsel1_degistir.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                image1 =  showImage(lbl_gorsel1,imageChooser(),"big");
-                System.out.println(image1);
+                image1 =showImage(lbl_gorsel1,imageChooser(),"big");
+
             }
         });
         btn_gorsel1_sil.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 deleteImage(lbl_gorsel1,image1);
-                System.out.println(image1);
+
             }
         });
 
@@ -262,6 +262,7 @@ public class UrunKontrol extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                image4 = showImage(lbl_gorsel4,imageChooser(),"big");
+
             }
         });
 
@@ -296,10 +297,10 @@ public class UrunKontrol extends JFrame {
 
         showImage(urun_fotograf_1,urun.getResim1(),"small");
         showImage(urun_fotograf_2,urun.getResim2(),"small");
-        showImage(lbl_gorsel1,urun.getResim1(),"big");
-        showImage(lbl_gorsel2,urun.getResim2(),"big");
-        showImage(lbl_gorsel3,urun.getResim3(),"big");
-        showImage(lbl_gorsel4,urun.getResim4(),"big");
+        image1 = showImage(lbl_gorsel1,urun.getResim1(),"big");
+        image2 = showImage(lbl_gorsel2,urun.getResim2(),"big");
+        image3 = showImage(lbl_gorsel3,urun.getResim3(),"big");
+        image4 = showImage(lbl_gorsel4,urun.getResim4(),"big");
 
     }
 
@@ -399,16 +400,24 @@ public class UrunKontrol extends JFrame {
         return ImageHelper.imageChooser();
     }
     private String showImage(JLabel lbl,String imagePath,String type){
-        try{
-            switch (type) {
-                case "big" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath)));
-                case "small" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath, 100, 100)));
+        if(imagePath == null || imagePath.equals("")){
+            lbl.setIcon(null);
+            return null;
+
+        }else{
+            try{
+                switch (type) {
+                    case "big" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath)));
+                    case "small" -> lbl.setIcon(new ImageIcon(ImageHelper.resizeImage(imagePath, 100, 100)));
+                }
+
+
+            }catch (IOException ex){
+                System.out.println("show image patladı baboli!");
             }
-
-        }catch (IOException ex){
-
+            return imagePath;
         }
-        return imagePath;
+
     }
 
     private void deleteImage(JLabel lbl,String imagePath){
@@ -436,13 +445,13 @@ public class UrunKontrol extends JFrame {
             if(component instanceof JTextField){
                 ((JTextField) component).setEditable(isEnabled);
             }
-            if(component instanceof JComboBox){
+            else if(component instanceof JComboBox){
                 component.setEnabled(isEnabled);
             }
-            if(component instanceof JButton){
+            else if(component instanceof JButton){
                 component.setEnabled(isEnabled);
             }
-            if(component instanceof JRadioButton){
+            else if(component instanceof JRadioButton){
                 component.setEnabled(isEnabled);
             }
 
