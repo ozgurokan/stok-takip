@@ -3,7 +3,6 @@ package com.ozgurokanozdal.services;
 import com.ozgurokanozdal.config.DBConnector;
 import com.ozgurokanozdal.entity.KategoriAlt;
 import com.ozgurokanozdal.entity.KategoriAna;
-import com.ozgurokanozdal.entity.OdemeTip;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,15 +10,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KategoriService {
-    public static KategoriService kategoriService = new KategoriService();
+public class KategoriServis {
+
+    public static KategoriServis kategoriServis = new KategoriServis();
 
 
-    private KategoriService(){
+    private KategoriServis(){
 
     }
-    public static KategoriService getInstance(){
-        return kategoriService;
+    public static KategoriServis getInstance(){
+        return kategoriServis;
     }
 
     public List<KategoriAna> getAllKategoriAna() {

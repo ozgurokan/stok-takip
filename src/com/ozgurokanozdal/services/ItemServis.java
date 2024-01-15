@@ -2,27 +2,24 @@ package com.ozgurokanozdal.services;
 
 import com.ozgurokanozdal.config.DBConnector;
 import com.ozgurokanozdal.entity.BarkodTip;
-import com.ozgurokanozdal.entity.Item;
 import com.ozgurokanozdal.entity.OdemeTip;
-import com.ozgurokanozdal.interfaces.IServis;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemService {
+public class ItemServis {
 
-    public static ItemService itemService = new ItemService();
+    public static  ItemServis itemServis = new ItemServis();
 
 
-    private ItemService(){
+    private ItemServis(){
 
     }
-    public static ItemService getInstance(){
-        return itemService;
+    public static ItemServis getInstance(){
+        return itemServis;
     }
 
 

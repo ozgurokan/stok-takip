@@ -1,6 +1,6 @@
 package com.ozgurokanozdal.dto;
 
-public class TableItemUrun {
+public class TabloUrun {
 
     private long id;
     private String durum;
@@ -11,10 +11,10 @@ public class TableItemUrun {
     private String ureticiIsim;
     private int kdv;
 
-    public TableItemUrun() {
+    public TabloUrun() {
     }
 
-    public TableItemUrun(long id, String durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv) {
+    public TabloUrun(long id, String durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv) {
         this.id = id;
         this.durum = durum;
         this.kod = kod;

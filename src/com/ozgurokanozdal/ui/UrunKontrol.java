@@ -5,9 +5,9 @@ import com.ozgurokanozdal.entity.*;
 import com.ozgurokanozdal.helper.ImageHelper;
 import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIValidate;
-import com.ozgurokanozdal.services.ItemService;
-import com.ozgurokanozdal.services.KategoriService;
-import com.ozgurokanozdal.services.UreticiService;
+import com.ozgurokanozdal.services.ItemServis;
+import com.ozgurokanozdal.services.KategoriServis;
+import com.ozgurokanozdal.services.UreticiServis;
 import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
@@ -327,7 +327,7 @@ public class UrunKontrol extends JFrame {
     }
     private void loadOdemeTipCMB(){
         cmb_odemeTip.removeAllItems();
-        for(OdemeTip odemeTip : ItemService.getInstance().getAllOdemeTip()){
+        for(OdemeTip odemeTip : ItemServis.getInstance().getAllOdemeTip()){
             cmb_odemeTip.addItem(new Item(odemeTip.getId(), odemeTip.getName()));
         }
         cmb_odemeTip.setSelectedItem(2);
@@ -352,14 +352,14 @@ public class UrunKontrol extends JFrame {
     private void loadBarkodTipCMB(){
         cmb_barkodTip.removeAllItems();
 
-        for(BarkodTip barkodTip : ItemService.getInstance().getAllBarkodTip()){
+        for(BarkodTip barkodTip : ItemServis.getInstance().getAllBarkodTip()){
             cmb_barkodTip.addItem(new Item(barkodTip.getId(), barkodTip.getName()));
         }
     }
     private void loadKategoriAnaCMB(){
         cmb_kategoriAna.removeAllItems();
 
-        for(KategoriAna kategoriAna : KategoriService.getInstance().getAllKategoriAna()){
+        for(KategoriAna kategoriAna : KategoriServis.getInstance().getAllKategoriAna()){
             cmb_kategoriAna.addItem(new Item(kategoriAna.getId(), kategoriAna.getName()));
         }
 
@@ -367,13 +367,13 @@ public class UrunKontrol extends JFrame {
 
     private void loadKategoriAltCMB(int parentId){
         cmb_kategoriAlt.removeAllItems();
-        for(KategoriAlt kategoriAlt : KategoriService.getInstance().getAllKategoriAltByParentId(parentId)){
+        for(KategoriAlt kategoriAlt : KategoriServis.getInstance().getAllKategoriAltByParentId(parentId)){
             cmb_kategoriAlt.addItem(new Item(kategoriAlt.getId(), kategoriAlt.getName()));
         }
     }
     private void loadUreticiCMB(){
         cmb_ureticiKod.removeAllItems();
-        for(Uretici uretici : UreticiService.getInstance().getAllUretici()){
+        for(Uretici uretici : UreticiServis.getInstance().getAllUretici()){
             cmb_ureticiKod.addItem(new Item(uretici.getId(), uretici.getName()));
 
         }

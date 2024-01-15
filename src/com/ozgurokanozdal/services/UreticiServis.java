@@ -1,7 +1,6 @@
 package com.ozgurokanozdal.services;
 
 import com.ozgurokanozdal.config.DBConnector;
-import com.ozgurokanozdal.entity.KategoriAna;
 import com.ozgurokanozdal.entity.Uretici;
 
 import java.sql.ResultSet;
@@ -10,16 +9,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UreticiService {
+public class UreticiServis {
 
-    public static UreticiService ureticiService = new UreticiService();
+    public static UreticiServis ureticiServis = new UreticiServis();
 
 
-    private UreticiService(){
+    private UreticiServis(){
 
     }
-    public static UreticiService getInstance(){
-        return ureticiService;
+    public static UreticiServis getInstance(){
+        return ureticiServis;
     }
 
     public List<Uretici> getAllUretici() {

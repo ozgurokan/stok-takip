@@ -1,7 +1,7 @@
 package com.ozgurokanozdal.services;
 
 import com.ozgurokanozdal.config.DBConnector;
-import com.ozgurokanozdal.dto.TableItemUrun;
+import com.ozgurokanozdal.dto.TabloUrun;
 import com.ozgurokanozdal.entity.Urun;
 import com.ozgurokanozdal.interfaces.IServis;
 
@@ -53,7 +53,7 @@ public class UrunServis implements IServis<Urun> {
         return urunler;
     }
 
-    public List<TableItemUrun> getAllForTable(int filterDurum,int filterKategori){
+    public  List<TabloUrun> getAllForTable(int filterDurum, int filterKategori){
 
         String filterDurumSTR = filterDurum == 1 ? "A" : "P";
 
@@ -77,7 +77,7 @@ public class UrunServis implements IServis<Urun> {
         }
 //        System.out.println(QUERY.toString());
 
-        List<TableItemUrun> urunler = new ArrayList<>();
+        List<TabloUrun> urunler = new ArrayList<>();
 
         try{
             Statement st = DBConnector.getInstance().createStatement();
@@ -85,12 +85,12 @@ public class UrunServis implements IServis<Urun> {
 
             while(rs.next()){
                 int i = 1;
-                TableItemUrun tableItemUrun = new TableItemUrun(
+                TabloUrun tabloUrun = new TabloUrun(
                         rs.getInt(i++),rs.getString(i++),
                         rs.getString(i++),rs.getString(i++),rs.getString(i++),
                         rs.getString(i++),rs.getString(i++),rs.getInt(i++)
                 );
-                urunler.add(tableItemUrun);
+                urunler.add(tabloUrun);
 
             }
             st.close();
@@ -207,6 +207,8 @@ public class UrunServis implements IServis<Urun> {
         }
     }
 
+
+    // silme işlemi kullanılmayacak pasif ve aktif duruma getirilecek hareket tablosuna zarar vermemek için.
     @Override
     public boolean deleteById(Long id) {
 

@@ -1,11 +1,11 @@
 package com.ozgurokanozdal.ui;
 
-import com.ozgurokanozdal.dto.TableItemUrun;
+import com.ozgurokanozdal.dto.TabloUrun;
 import com.ozgurokanozdal.entity.Item;
 import com.ozgurokanozdal.entity.KategoriAna;
 import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIPages;
-import com.ozgurokanozdal.services.KategoriService;
+import com.ozgurokanozdal.services.KategoriServis;
 import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
@@ -37,8 +37,8 @@ public class Urunler extends JFrame {
         JFrame thisFrame = this;
         initComboBoxes();
 
-        System.out.println(this.hashCode());
-        System.out.println(thisFrame.hashCode());
+//        System.out.println(this.hashCode());
+//        System.out.println(thisFrame.hashCode());
 
         // *************************************************************************
         // URUN TABLE START
@@ -120,11 +120,6 @@ public class Urunler extends JFrame {
                     public void windowClosing(WindowEvent e) {
                         loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
                     }
-
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
-                    }
                 });
 
             }
@@ -167,7 +162,7 @@ public class Urunler extends JFrame {
         DefaultTableModel clearModel = (DefaultTableModel) urunler_table.getModel();
         clearModel.setRowCount(0);
         int i;
-        for(TableItemUrun urun : UrunServis.getInstance().getAllForTable(filterDurum,filterKategoriAna)){
+        for(TabloUrun urun : UrunServis.getInstance().getAllForTable(filterDurum,filterKategoriAna)){
             i=0;
             urunler_row_list[i++] = urun.getId();
             urunler_row_list[i++] = urun.getDurum();
@@ -195,7 +190,7 @@ public class Urunler extends JFrame {
 
     private void loadFilterKategoriCMB(){
         cmb_filterKategori.addItem(new Item(-2,"HEPSI"));
-        for(KategoriAna kategoriAna : KategoriService.getInstance().getAllKategoriAna()){
+        for(KategoriAna kategoriAna : KategoriServis.getInstance().getAllKategoriAna()){
             cmb_filterKategori.addItem(new Item(kategoriAna.getId(), kategoriAna.getName()));
         }
     }
