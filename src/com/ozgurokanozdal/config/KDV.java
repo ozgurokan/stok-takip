@@ -1,6 +1,6 @@
 package com.ozgurokanozdal.config;
 
-import com.ozgurokanozdal.entity.Item;
+import com.ozgurokanozdal.dto.Item;
 
 import java.util.ArrayList;
 

@@ -11,13 +11,16 @@ import java.util.List;
 
 public class UreticiServis {
 
-    public static UreticiServis ureticiServis = new UreticiServis();
+    private static UreticiServis ureticiServis;
 
 
     private UreticiServis(){
 
     }
     public static UreticiServis getInstance(){
+        if(ureticiServis == null){
+             ureticiServis = new UreticiServis();
+        }
         return ureticiServis;
     }
 

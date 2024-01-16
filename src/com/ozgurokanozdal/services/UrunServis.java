@@ -10,16 +10,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UrunServis implements IServis<Urun> {
+public class UrunServis implements IServis<Urun,Long> {
 
 
-    public static UrunServis urunServis = new UrunServis();
+    private static UrunServis urunServis;
 
 
     private UrunServis(){
 
     }
     public static UrunServis getInstance(){
+        if(urunServis == null){
+             urunServis = new UrunServis();
+        }
         return urunServis;
     }
 
@@ -207,13 +210,6 @@ public class UrunServis implements IServis<Urun> {
         }
     }
 
-
-    // silme işlemi kullanılmayacak pasif ve aktif duruma getirilecek hareket tablosuna zarar vermemek için.
-    @Override
-    public boolean deleteById(Long id) {
-
-        return false;
-    }
 
 
 }

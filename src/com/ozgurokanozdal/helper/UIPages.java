@@ -1,6 +1,7 @@
 package com.ozgurokanozdal.helper;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -52,9 +53,9 @@ public class UIPages {
 
     public static JFrame redirectPage(JFrame frameChild,JFrame frameParent){
 
-        frameChild.addWindowListener(new WindowListener() {
+        frameChild.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowOpened(WindowEvent e) {
+            public void windowActivated(WindowEvent e) {
                 frameParent.setVisible(false);
             }
 
@@ -68,25 +69,6 @@ public class UIPages {
                 frameParent.setVisible(true);
             }
 
-            @Override
-            public void windowIconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeiconified(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowActivated(WindowEvent e) {
-
-            }
-
-            @Override
-            public void windowDeactivated(WindowEvent e) {
-
-            }
         });
 
         return frameChild;
@@ -94,6 +76,38 @@ public class UIPages {
 
     public static void setLayout(){
 
+    }
+
+    public static void disableAllFields(JPanel panel, Boolean isEnabled) {
+
+
+        Component[] components = panel.getComponents();
+
+        for (Component component : components) {
+
+            if (component instanceof JPanel) {
+                disableAllFields((JPanel) component, isEnabled);
+            }
+            if( component instanceof JTabbedPane){
+                Component[] components1 = ((JTabbedPane) component).getComponents();
+                for(Component component1 : components1){
+                    disableAllFields((JPanel) component1, isEnabled);
+                }
+            }
+            if(component instanceof JTextField){
+                ((JTextField) component).setEditable(isEnabled);
+            }
+            else if(component instanceof JComboBox){
+                component.setEnabled(isEnabled);
+            }
+            else if(component instanceof JButton){
+                component.setEnabled(isEnabled);
+            }
+            else if(component instanceof JRadioButton){
+                component.setEnabled(isEnabled);
+            }
+
+        }
     }
 
 

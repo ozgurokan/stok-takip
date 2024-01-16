@@ -1,6 +1,8 @@
 package com.ozgurokanozdal.ui;
 
+import com.ozgurokanozdal.dto.TableHareket;
 import com.ozgurokanozdal.entity.Hareket;
+import com.ozgurokanozdal.helper.UIPages;
 import com.ozgurokanozdal.services.HareketServis;
 
 import javax.swing.*;
@@ -8,7 +10,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class Hareketler extends JFrame {
+public class HareketlerGUI extends JFrame {
     private JPanel wrapper;
     private JPanel pnl_top;
     private JPanel pnl_mid;
@@ -23,11 +25,12 @@ public class Hareketler extends JFrame {
 
     private int selected;
 
-    public Hareketler(){
+    public HareketlerGUI(){
         add(wrapper);
         setTitle("Hareketler");
-        setSize(720,360);
+        setSize(720,960);
         setVisible(true);
+        JFrame thisFrame = this;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
@@ -46,9 +49,11 @@ public class Hareketler extends JFrame {
         loadHareket();
 
 
-
-
         tbl_hareketler.setModel(hareket_tbl_model);
+        tbl_hareketler.getColumnModel().getColumn(0).setMinWidth(0);
+        tbl_hareketler.getColumnModel().getColumn(0).setWidth(0);
+        tbl_hareketler.getColumnModel().getColumn(0).setMaxWidth(0);
+
 
 
         tbl_hareketler.getTableHeader().setReorderingAllowed(false);
@@ -72,7 +77,7 @@ public class Hareketler extends JFrame {
         btn_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // hareket formu
+                UIPages.newWindow(new HareketDetayGUI(0,0),thisFrame);
             }
         });
 
@@ -89,16 +94,14 @@ public class Hareketler extends JFrame {
         DefaultTableModel clearModel = (DefaultTableModel) tbl_hareketler.getModel();
         clearModel.setRowCount(0);
         int i;
-        for(Hareket hareket : HareketServis.getAll()){
+        for(TableHareket hareket : HareketServis.getInstance().getAll()){
             i=0;
             hareketler_tbl_rows[i++] = hareket.getId();
-            hareketler_tbl_rows[i++] = hareket.getCari_id();
+            hareketler_tbl_rows[i++] = hareket.getCariAd();
             hareketler_tbl_rows[i++] = hareket.getTarih();
             hareketler_tbl_rows[i++] = hareket.getSaat();
             hareketler_tbl_rows[i++] = hareket.getTur();
             hareketler_tbl_rows[i++] = hareket.getTutar();
-
-
 
 
             hareket_tbl_model.addRow(hareketler_tbl_rows);

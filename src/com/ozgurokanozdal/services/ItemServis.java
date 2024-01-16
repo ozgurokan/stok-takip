@@ -12,13 +12,16 @@ import java.util.List;
 
 public class ItemServis {
 
-    public static  ItemServis itemServis = new ItemServis();
+    private static  ItemServis itemServis;
 
 
     private ItemServis(){
 
     }
     public static ItemServis getInstance(){
+        if(itemServis == null){
+            itemServis = new ItemServis();
+        }
         return itemServis;
     }
 

@@ -12,13 +12,16 @@ import java.util.List;
 
 public class KategoriServis {
 
-    public static KategoriServis kategoriServis = new KategoriServis();
+    private static KategoriServis kategoriServis;
 
 
     private KategoriServis(){
 
     }
     public static KategoriServis getInstance(){
+        if(kategoriServis == null){
+             kategoriServis = new KategoriServis();
+        }
         return kategoriServis;
     }
 

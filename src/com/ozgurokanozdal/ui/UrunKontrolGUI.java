@@ -1,6 +1,7 @@
 package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.config.KDV;
+import com.ozgurokanozdal.dto.Item;
 import com.ozgurokanozdal.entity.*;
 import com.ozgurokanozdal.helper.ImageHelper;
 import com.ozgurokanozdal.helper.UIDialog;
@@ -16,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 
-public class UrunKontrol extends JFrame {
+public class UrunKontrolGUI extends JFrame {
     private JPanel wrapper;
     private JTabbedPane tab_pnl;
     private JPanel pnl_genel;
@@ -31,11 +32,11 @@ public class UrunKontrol extends JFrame {
     private JButton btn_vazgec;
     private JTextField fld_ozelKod;
     private JButton btn_ozelKod_more;
-    private JComboBox<Item> cmb_kategoriAna;
-    private JComboBox<Item> cmb_ureticiKod;
+    private JComboBox<Item<Integer,String>> cmb_kategoriAna;
+    private JComboBox<Item<Integer,String>> cmb_ureticiKod;
     private JButton btn_grupKod_more;
     private JButton btn_ureticiKod_more;
-    private JComboBox<Item> cmb_odemeTip;
+    private JComboBox<Item<Integer,String>> cmb_odemeTip;
     private JComboBox<Durum> cmb_stat;
     private JPanel pnl_kod;
     private JPanel pnl_odeme;
@@ -51,13 +52,13 @@ public class UrunKontrol extends JFrame {
     private JLabel urun_fotograf_2;
     private JLabel urun_fotograf_1;
     private JButton btn_aciklama_more;
-    private JComboBox<Item> cmb_barkodTip;
-    private JComboBox<Item> cmb_kdvAlis;
-    private JComboBox<Item> cmb_kdvSatis;
-    private JComboBox<Item> cmb_kdvIade;
+    private JComboBox<Item<Integer,String>> cmb_barkodTip;
+    private JComboBox<Item<Integer,String>> cmb_kdvAlis;
+    private JComboBox<Item<Integer,String>> cmb_kdvSatis;
+    private JComboBox<Item<Integer,String>> cmb_kdvIade;
     private JRadioButton radioButton1;
     private JRadioButton radioButton2;
-    private JComboBox<Item> cmb_kategoriAlt;
+    private JComboBox<Item<Integer,String>> cmb_kategoriAlt;
     private JButton btn_gorsel1_sil;
     private JButton btn_gorsel1_degistir;
     private JPanel pnl_gorsel1;
@@ -93,7 +94,7 @@ public class UrunKontrol extends JFrame {
     // 0 --> save new prod
     // 1 --> inspect prod
     // 2 --> update prod
-    public UrunKontrol(int logic, long id){
+    public UrunKontrolGUI(int logic, long id){
 
 
         add(wrapper);
@@ -101,6 +102,7 @@ public class UrunKontrol extends JFrame {
         setMinimumSize(new Dimension(1200,720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
+
 
         initComboBoxes();
         cmb_odemeTip.setSelectedIndex(2);
@@ -150,9 +152,9 @@ public class UrunKontrol extends JFrame {
                             .setBarkodUygulamaTip(0).setBirimKodId(0)
                             .setMinimumStokSeviye(0).setResim1(image1).setResim2(image2).setResim3(image3).setResim4(image4).build();
 
-                    System.out.println(urunToSave.toString());
                     UrunServis.getInstance().create(urunToSave);
                     UIDialog.showMessage("done");
+                    setVisible(false);
                     dispose();
                     }catch (RuntimeException a){
                         UIDialog.showMessage("error");
@@ -185,6 +187,7 @@ public class UrunKontrol extends JFrame {
 
                         UrunServis.getInstance().updateById(id,urunToUpdate);
                         UIDialog.showMessage("Güncelleme İşlemi Başarılı");
+                        setVisible(false);
                         dispose();
                     }catch (RuntimeException a){
                         UIDialog.showMessage("Bir Hata Oluştu!");
@@ -192,6 +195,7 @@ public class UrunKontrol extends JFrame {
 
                     }
                 }
+
             }
         });
 
@@ -199,6 +203,8 @@ public class UrunKontrol extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(UIDialog.confirm("Emin misin?")){
+                    
+                    setVisible(false);
                     dispose();
                 }
 
@@ -308,7 +314,7 @@ public class UrunKontrol extends JFrame {
 
 
     // LOAD COMBO BOX+++++++++++++++++++++++
-    private void findAndSetSelectedItemCMB(int id,JComboBox<Item> comboBox){
+    private void findAndSetSelectedItemCMB(int id,JComboBox<Item<Integer,String>> comboBox){
         for(int i = 0; i< comboBox.getItemCount(); i++){
             if(comboBox.getItemAt(i).getKey() == id){
                 comboBox.setSelectedIndex(i);
@@ -389,7 +395,7 @@ public class UrunKontrol extends JFrame {
         loadKategoriAltCMB(getComboItemKey(cmb_kategoriAna));
     }
 
-    private int getComboItemKey(JComboBox<Item> comboBox){
+    private int getComboItemKey(JComboBox<Item<Integer,String>> comboBox){
         return comboBox.getItemAt(comboBox.getSelectedIndex()).getKey();
     }
 

@@ -1,7 +1,7 @@
 package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.dto.TabloUrun;
-import com.ozgurokanozdal.entity.Item;
+import com.ozgurokanozdal.dto.Item;
 import com.ozgurokanozdal.entity.KategoriAna;
 import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIPages;
@@ -12,7 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 
-public class Urunler extends JFrame {
+public class UrunlerGUI extends JFrame {
     private JPanel wrapper;
     private JButton ekle_btn;
     private JButton duzenle_btn;
@@ -20,21 +20,23 @@ public class Urunler extends JFrame {
     private JPanel urunler_kontrol_pnl;
     private JScrollPane urunler_scrll;
     private JTable urunler_table;
-    private JComboBox<Item> cmb_filterAPH;
-    private JComboBox<Item> cmb_filterKategori;
+    private JComboBox<Item<Integer,String>> cmb_filterAPH;
+    private JComboBox<Item<Integer,String>> cmb_filterKategori;
 
     private DefaultTableModel urunler_tbl_mdl;
     private Object[] urunler_row_list;
 
     private long urun_selected;
 
-    public Urunler(){
+    public UrunlerGUI(){
         add(wrapper);
         setSize(1200,720);
         setTitle("Urunler");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setVisible(true);
         JFrame thisFrame = this;
+
+
         initComboBoxes();
 
 //        System.out.println(this.hashCode());
@@ -88,26 +90,24 @@ public class Urunler extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                UIPages.newWindow(new UrunKontrol(0,0),thisFrame).addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosing(WindowEvent e) {
-                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
-                    }
-
+                UIPages.newWindow(new UrunKontrolGUI(0,0),thisFrame).addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
                     }
                 });
-
-
             }
         });
 
         incele_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunKontrol(2,urun_selected),thisFrame);
+                UIPages.newWindow(new UrunKontrolGUI(2,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                    }
+                });
             }
         });
 
@@ -115,9 +115,9 @@ public class Urunler extends JFrame {
         duzenle_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunKontrol(1,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
+                UIPages.newWindow(new UrunKontrolGUI(1,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
                     @Override
-                    public void windowClosing(WindowEvent e) {
+                    public void windowClosed(WindowEvent e) {
                         loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
                     }
                 });
@@ -200,7 +200,7 @@ public class Urunler extends JFrame {
         loadFilterKategoriCMB();
     }
 
-    private int getComboItemKey(JComboBox<Item> comboBox){
+    private int getComboItemKey(JComboBox<Item<Integer,String>> comboBox){
         return comboBox.getItemAt(comboBox.getSelectedIndex()).getKey();
     }
 

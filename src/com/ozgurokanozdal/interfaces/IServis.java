@@ -2,17 +2,17 @@ package com.ozgurokanozdal.interfaces;
 
 import java.util.List;
 
-public interface IServis<T> {
+public interface IServis<E,P> {
 
-    public List<T> getAll();
+    public List<E> getAll();
 
-    public boolean create(T entity);
+    public boolean create(E entity);
 
-    public T getById(Long id);
+    public E getById(Long id);
 
-    public boolean updateById(Long id, T entity);
+    public boolean updateById(P id, E entity);
 
-    public boolean deleteById(Long id);
+
 
 
 
