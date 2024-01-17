@@ -33,7 +33,6 @@ public class UrunlerGUI extends JFrame {
         setSize(1200,720);
         setTitle("Urunler");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
         JFrame thisFrame = this;
 
 

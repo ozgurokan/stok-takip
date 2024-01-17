@@ -9,8 +9,17 @@ import java.awt.event.WindowListener;
 public class UIPages {
 
 
-    public static JFrame newWindow(JFrame frameChild,JFrame frameParent){
+    public static void centeredFrame(JFrame frame){
+        Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+        int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+        int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
+        frame.setLocation(x,y);
+        frame.setVisible(true);
+    }
 
+
+    public static JFrame newWindow(JFrame frameChild,JFrame frameParent){
+        centeredFrame(frameChild);
         frameChild.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
@@ -53,6 +62,7 @@ public class UIPages {
 
     public static JFrame redirectPage(JFrame frameChild,JFrame frameParent){
 
+        centeredFrame(frameChild);
         frameChild.addWindowListener(new WindowAdapter() {
             @Override
             public void windowActivated(WindowEvent e) {

@@ -29,7 +29,7 @@ public class HareketlerGUI extends JFrame {
         add(wrapper);
         setTitle("Hareketler");
         setSize(720,960);
-        setVisible(true);
+
         JFrame thisFrame = this;
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

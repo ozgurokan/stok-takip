@@ -13,4 +13,12 @@ public class CariDetayGUI extends JFrame{
     private JTextField textField2;
     private JTextPane textPane1;
     private JButton ekleButton;
+
+
+    public CariDetayGUI(){
+        add(wrapper);
+        setSize(360,480);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+    }
 }

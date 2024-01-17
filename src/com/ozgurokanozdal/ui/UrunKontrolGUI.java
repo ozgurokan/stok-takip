@@ -101,7 +101,6 @@ public class UrunKontrolGUI extends JFrame {
         setSize(1200,720);
         setMinimumSize(new Dimension(1200,720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setVisible(true);
 
 
         initComboBoxes();
