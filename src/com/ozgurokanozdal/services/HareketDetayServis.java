@@ -25,7 +25,9 @@ public class HareketDetayServis {
     }
 
     public List<HareketDetay> getAllByHareketId(long hareketId){
-        String query = "SELECT * FROM hareket_detay WHERE hareket_id = " + hareketId;
+        String query = "SELECT hareket_detay.* ,urunler.isim FROM hareket_detay\n" +
+                "INNER JOIN urunler ON urun_id = urunler.ID\n" +
+                "WHERE hareket_detay.hareket_id = " + hareketId;
         List<HareketDetay> hareketDetayList = new ArrayList<>();
 
         try {

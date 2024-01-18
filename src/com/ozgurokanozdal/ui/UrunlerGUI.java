@@ -26,7 +26,7 @@ public class UrunlerGUI extends JFrame {
     private DefaultTableModel urunler_tbl_mdl;
     private Object[] urunler_row_list;
 
-    private long urun_selected;
+    private Long urun_selected;
 
     public UrunlerGUI(){
         add(wrapper);
@@ -101,12 +101,17 @@ public class UrunlerGUI extends JFrame {
         incele_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunKontrolGUI(2,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
-                    }
-                });
+                if(urun_selected == null){
+                    UIDialog.showMessage("Lütfen bir ürün seçin!");
+                }else{
+                    UIPages.newWindow(new UrunKontrolGUI(2,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                        }
+                    });
+                }
+
             }
         });
 
@@ -114,12 +119,16 @@ public class UrunlerGUI extends JFrame {
         duzenle_btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunKontrolGUI(1,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
-                    @Override
-                    public void windowClosed(WindowEvent e) {
-                        loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
-                    }
-                });
+                if(urun_selected == null){
+                    UIDialog.showMessage("Lütfen bir ürün seçin!");
+                }else{
+                    UIPages.newWindow(new UrunKontrolGUI(1,urun_selected),thisFrame).addWindowListener(new WindowAdapter() {
+                        @Override
+                        public void windowClosed(WindowEvent e) {
+                            loadUrunList(getComboItemKey(cmb_filterAPH),getComboItemKey(cmb_filterKategori));
+                        }
+                    });
+                }
 
             }
         });

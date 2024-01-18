@@ -32,39 +32,15 @@
                   <text value="Cari Kod "/>
                 </properties>
               </component>
-              <component id="d2ac" class="javax.swing.JLabel">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Tarih"/>
-                </properties>
-              </component>
               <component id="a6b08" class="javax.swing.JLabel">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Telefon No"/>
                 </properties>
               </component>
-              <component id="5ce6" class="javax.swing.JTextField" binding="fld_tarih">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="e9552" class="javax.swing.JTextField" binding="fld_telNo">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
-                    <preferred-size width="150" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties/>
-              </component>
-              <component id="49030" class="javax.swing.JLabel">
+              <component id="49030" class="javax.swing.JLabel" binding="lbl_cariKod">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -94,6 +70,30 @@
                   <text value="..."/>
                 </properties>
               </component>
+              <component id="f9121" class="javax.swing.JLabel" binding="lbl_telNo">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="d2ac" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Tarih"/>
+                </properties>
+              </component>
+              <component id="5ce6" class="javax.swing.JTextField" binding="fld_tarih">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <preferred-size width="150" height="-1"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
             </children>
           </grid>
           <grid id="d9789" binding="pnl_adres" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -106,13 +106,16 @@
               <color color="-4473925"/>
             </border>
             <children>
-              <component id="59a59" class="javax.swing.JTextPane" binding="fld_adres">
+              <component id="3d5be" class="javax.swing.JTextPane" binding="fld_adres">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
                     <preferred-size width="150" height="50"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <editable value="false"/>
+                  <enabled value="true"/>
+                </properties>
               </component>
             </children>
           </grid>

@@ -2,7 +2,9 @@ package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.dto.TableHareket;
 import com.ozgurokanozdal.entity.Hareket;
+import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIPages;
+import com.ozgurokanozdal.helper.UIValidate;
 import com.ozgurokanozdal.services.HareketServis;
 
 import javax.swing.*;
@@ -23,7 +25,7 @@ public class HareketlerGUI extends JFrame {
     private DefaultTableModel hareket_tbl_model;
     private Object[] hareketler_tbl_rows;
 
-    private int selected;
+    private Long selected;
 
     public HareketlerGUI(){
         add(wrapper);
@@ -63,7 +65,7 @@ public class HareketlerGUI extends JFrame {
         tbl_hareketler.setAutoCreateRowSorter(true);
         tbl_hareketler.getSelectionModel().addListSelectionListener(e ->{
             try{
-                selected = (int) tbl_hareketler.getValueAt(tbl_hareketler.getSelectedRow(),0);
+                selected = (long) tbl_hareketler.getValueAt(tbl_hareketler.getSelectedRow(),0);
 
             }catch (RuntimeException r1 ){
 
@@ -78,6 +80,19 @@ public class HareketlerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UIPages.newWindow(new HareketDetayGUI(0,0),thisFrame);
+            }
+        });
+        btn_inspect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(selected == null){
+                    UIDialog.showMessage("Lütfen bir hareket seçin!");
+                }else{
+                    UIPages.newWindow(new HareketDetayGUI(2,selected),thisFrame);
+                }
+
+
             }
         });
 

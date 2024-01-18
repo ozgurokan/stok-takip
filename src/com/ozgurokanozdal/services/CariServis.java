@@ -3,6 +3,7 @@ package com.ozgurokanozdal.services;
 import com.ozgurokanozdal.config.DBConnector;
 import com.ozgurokanozdal.entity.Cari;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -25,10 +26,12 @@ public class CariServis {
         return cariServis;
     }
 
-    public List<Cari> getAll() {
+    public List<Cari> getAll(boolean asc) {
         String query = "SELECT * FROM cariler";
         List<Cari> cariler = new ArrayList<>();
-
+        if(asc){
+            query += " ORDER BY isim ASC";
+        }
         try {
             Statement st = DBConnector.getInstance().createStatement();
             ResultSet rs = st.executeQuery(query);
@@ -51,7 +54,7 @@ public class CariServis {
         return cariler;
     }
 
-    public Cari getOneByID(int id) {
+    public Cari getOneByID(long id) {
         String query = "SELECT * FROM cariler WHERE id = " + id;
         Cari cari = new Cari();
         try {
@@ -74,5 +77,24 @@ public class CariServis {
             throw new RuntimeException(e);
         }
         return cari;
+    }
+
+    public boolean add(Cari cari){
+        String query = "INSERT INTO cariler(kod,isim,vergi_no,vergi_dairesi,adres,tel_no) VALUES (?,?,?,?,?,?)";
+        try{
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            pr.setString(1, cari.getKod());
+            pr.setString(2, cari.getIsim());
+            pr.setString(3,cari.getVergiNo());
+            pr.setString(4, cari.getVergiDairesi());
+            pr.setString(5, cari.getAdres());
+            pr.setString(6, cari.getTel_no());
+
+            return pr.executeUpdate() != -1;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }
