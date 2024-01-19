@@ -3,14 +3,19 @@ package com.ozgurokanozdal.ui;
 import com.ozgurokanozdal.entity.Cari;
 import com.ozgurokanozdal.dto.Item;
 import com.ozgurokanozdal.entity.HareketDetay;
+import com.ozgurokanozdal.entity.Urun;
 import com.ozgurokanozdal.helper.UIPages;
 import com.ozgurokanozdal.services.CariServis;
 import com.ozgurokanozdal.services.HareketDetayServis;
+import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 import java.awt.event.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class HareketDetayGUI extends JFrame {
 
@@ -23,7 +28,6 @@ public class HareketDetayGUI extends JFrame {
     private JPanel pnl_genel;
     private JPanel pnl_adres;
     private JTextPane fld_adres;
-    private JTextField fld_tarih;
     private JTextField fld_telNo;
     private JScrollPane scrll_hareket;
     private JButton btn_ekle;
@@ -33,6 +37,12 @@ public class HareketDetayGUI extends JFrame {
     private JButton btn_cari_kayit;
     private JLabel lbl_cariKod;
     private JLabel lbl_telNo;
+    private JPanel pnl_tarih;
+    private JTextField fld_tarih;
+    private JCheckBox check_bugun;
+    private JCheckBox check_suan;
+    private JTextField fld_saat;
+    private JButton ürünEkleButton;
     private JTextArea lbl_adres1;
 
     private DefaultTableModel mdl_hareket_detay;
@@ -52,12 +62,13 @@ public class HareketDetayGUI extends JFrame {
         mdl_hareket_detay = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column >= 5;
+                return false;
             }
+
 
         };
 
-        Object[] columns_hareketDetay = {"ID","ÜRÜN","MİKTAR","BİRİM","BİRİM FİYAT","TUTAR","DENEME"};
+        Object[] columns_hareketDetay = {"ID","URUN ID","ÜRÜN İSİM","ÜRÜN KOD","MİKTAR","BİRİM","BİRİM FİYAT","TUTAR"};
         mdl_hareket_detay.setColumnIdentifiers(columns_hareketDetay);
         hareketDetay_row_list = new Object[columns_hareketDetay.length];
         tbl_hareketler.setModel(mdl_hareket_detay);
@@ -67,8 +78,13 @@ public class HareketDetayGUI extends JFrame {
         tbl_hareketler.getColumnModel().getColumn(0).setMinWidth(0);
         tbl_hareketler.getColumnModel().getColumn(0).setWidth(0);
         tbl_hareketler.getColumnModel().getColumn(0).setMaxWidth(0);
+        tbl_hareketler.getColumnModel().getColumn(1).setMinWidth(0);
+        tbl_hareketler.getColumnModel().getColumn(1).setWidth(0);
+        tbl_hareketler.getColumnModel().getColumn(1).setMaxWidth(0);
         tbl_hareketler.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbl_hareketler.setAutoCreateRowSorter(true);
+        tbl_hareketler.getTableHeader().setReorderingAllowed(false);
+
         // hareket detay tablo ---------------------
 
         
@@ -76,10 +92,12 @@ public class HareketDetayGUI extends JFrame {
             setTitle("Hareket Değiştir");
             loadHareketTBL(id);
             loadHareketInfo(id);
+            calculateTotal();
         } else if (logic == 2) {
             setTitle("Hareket Detay");
             loadHareketInfo(id);
             loadHareketTBL(1);
+            calculateTotal();
             initComboBoxes();
             UIPages.disableAllFields(wrapper,false);
 
@@ -116,6 +134,46 @@ public class HareketDetayGUI extends JFrame {
                 }
             }
         });
+
+
+        check_bugun.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(check_bugun.isSelected()){
+                    fld_tarih.setText(String.valueOf(LocalDate.now()));
+                }else{
+                    fld_tarih.setText(null);
+                }
+            }
+        });
+
+        check_suan.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(check_suan.isSelected()){
+                    fld_saat.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                }else{
+                    fld_saat.setText(null);
+                }
+            }
+        });
+        fld_tarih.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(fld_tarih.getText().length() >= 10){
+                    e.consume();
+                }
+            }
+        });
+
+        fld_saat.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                if(fld_saat.getText().length() >= 8){
+                    e.consume();
+                }
+            }
+        });
     }
 
     private void loadHareketInfo(long id){
@@ -146,17 +204,31 @@ public class HareketDetayGUI extends JFrame {
     private void loadHareketTBL(long id){
         DefaultTableModel clearModel =(DefaultTableModel) tbl_hareketler.getModel();
         clearModel.setRowCount(0);
+        Urun urun;
         int i;
         for(HareketDetay hareketDetay : HareketDetayServis.getInstance().getAllByHareketId(id)){
             i = 0;
+            urun = UrunServis.getInstance().getById((long) hareketDetay.getUrunId());
             hareketDetay_row_list[i++] = hareketDetay.getId();
             hareketDetay_row_list[i++] = hareketDetay.getUrunId();
+            hareketDetay_row_list[i++] = urun.getIsim();
+            hareketDetay_row_list[i++] = urun.getKod();
             hareketDetay_row_list[i++] = hareketDetay.getMiktar();
-            hareketDetay_row_list[i++] = hareketDetay.getBirimId();
+            hareketDetay_row_list[i++] = urun.getBirimKodId();
             hareketDetay_row_list[i++] = hareketDetay.getBirimFiyat();
             hareketDetay_row_list[i++] = hareketDetay.getTutar();
+
             mdl_hareket_detay.addRow(hareketDetay_row_list);
         }
     }
+    private void calculateTotal(){
+        float total = 0F;
+        for (int i = 0; i < tbl_hareketler.getRowCount(); i++){
+            float amount = (float) tbl_hareketler.getValueAt(i, tbl_hareketler.getColumnCount()-1);
+            total += amount;
+        }
+        lbl_tutar_hesaplanmis.setText(String.valueOf(total));
+    }
+
 
 }

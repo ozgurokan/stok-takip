@@ -115,6 +115,8 @@ public class UIPages {
             }
             else if(component instanceof JRadioButton){
                 component.setEnabled(isEnabled);
+            } else if (component instanceof  JCheckBox) {
+                component.setEnabled(isEnabled);
             }
 
         }
