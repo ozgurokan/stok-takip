@@ -3,7 +3,6 @@ package com.ozgurokanozdal.ui;
 import com.ozgurokanozdal.helper.UIPages;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,6 +11,7 @@ public class HomePage extends JFrame {
     private JButton btn_urunList;
     private JButton btn_hareketler;
     private JButton btn_cariHesaplar;
+    private JButton btn_ureticiler;
 
 
     public HomePage(){
@@ -26,7 +26,7 @@ public class HomePage extends JFrame {
         btn_urunList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.redirectPage(new UrunlerGUI(),thisFrame);
+                UIPages.redirectPage(new UrunlerGUI(0),thisFrame);
             }
         });
 
@@ -44,5 +44,11 @@ public class HomePage extends JFrame {
             }
         });
 
+        btn_ureticiler.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UIPages.redirectPage(new UreticilerGUI(),thisFrame);
+            }
+        });
     }
 }

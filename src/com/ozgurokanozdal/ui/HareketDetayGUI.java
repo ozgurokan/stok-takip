@@ -11,7 +11,6 @@ import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -42,7 +41,9 @@ public class HareketDetayGUI extends JFrame {
     private JCheckBox check_bugun;
     private JCheckBox check_suan;
     private JTextField fld_saat;
-    private JButton ürünEkleButton;
+    private JButton btn_urunEkle;
+    private JPanel pnl_hareketTur;
+    private JComboBox<Item<Integer,String>> cmb_hareketTur;
     private JTextArea lbl_adres1;
 
     private DefaultTableModel mdl_hareket_detay;
@@ -174,6 +175,12 @@ public class HareketDetayGUI extends JFrame {
                 }
             }
         });
+        btn_urunEkle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UIPages.newWindow(new UrunSecGUI(),thisFrame);
+            }
+        });
     }
 
     private void loadHareketInfo(long id){
@@ -197,8 +204,16 @@ public class HareketDetayGUI extends JFrame {
         }
     }
 
+    private void loadHareketTur(){
+        cmb_hareketTur.removeAllItems();
+        cmb_hareketTur.addItem(new Item<Integer,String>(0,"Alış"));
+        cmb_hareketTur.addItem(new Item<Integer,String>(1,"Satış"));
+        cmb_hareketTur.addItem(new Item<Integer,String>(2,"İade"));
+    }
+
     private void initComboBoxes(){
         loadCariCMB();
+        loadHareketTur();
     }
 
     private void loadHareketTBL(long id){

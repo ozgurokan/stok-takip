@@ -8,8 +8,8 @@ public class Uretici {
 
     public Uretici(int id, String name, String code) {
         this.id = id;
-        this.code = code;
         this.name = name;
+        this.code = code;
     }
 
     public int getId() {
