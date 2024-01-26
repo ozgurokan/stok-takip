@@ -46,4 +46,9 @@ public class HareketDetayServis {
         }
     }
 
+    public boolean create(HareketDetay hareketDetay){
+//        String query = "INSERT INTO hareket_detay"
+        return false;
+    }
+
 }

@@ -4,52 +4,54 @@ import com.ozgurokanozdal.entity.Cari;
 import com.ozgurokanozdal.dto.Item;
 import com.ozgurokanozdal.entity.HareketDetay;
 import com.ozgurokanozdal.entity.Urun;
+import com.ozgurokanozdal.helper.TableHelper;
 import com.ozgurokanozdal.helper.UIPages;
 import com.ozgurokanozdal.services.CariServis;
 import com.ozgurokanozdal.services.HareketDetayServis;
 import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class HareketDetayGUI extends JFrame {
-
-
-    private JPanel wrapper;
+    private JPanel pnl_bt;
     private JPanel pnl_top;
     private JPanel pnl_mid;
-    private JPanel pnl_bt;
-    private JTable tbl_hareketler;
+    private JTextArea lbl_adres1;
     private JPanel pnl_genel;
     private JPanel pnl_adres;
-    private JTextPane fld_adres;
+    private JPanel pnl_hareketTur;
     private JTextField fld_telNo;
     private JScrollPane scrll_hareket;
     private JButton btn_ekle;
     private JLabel lbl_tutar;
+    private JPanel pnl_tarih;
     private JLabel lbl_tutar_hesaplanmis;
     private JComboBox<Item<Long,String>> cmb_cari;
     private JButton btn_cari_kayit;
     private JLabel lbl_cariKod;
     private JLabel lbl_telNo;
-    private JPanel pnl_tarih;
+    private JTextPane fld_adres;
     private JTextField fld_tarih;
     private JCheckBox check_bugun;
     private JCheckBox check_suan;
     private JTextField fld_saat;
     private JButton btn_urunEkle;
-    private JPanel pnl_hareketTur;
+    private JTable tbl_hareketler;
     private JComboBox<Item<Integer,String>> cmb_hareketTur;
-    private JTextArea lbl_adres1;
+    private JPanel wrapper;
 
     private DefaultTableModel mdl_hareket_detay;
     private Object[] hareketDetay_row_list;
-
-
 
     public HareketDetayGUI(int logic, long id){
         add(wrapper);
@@ -63,28 +65,42 @@ public class HareketDetayGUI extends JFrame {
         mdl_hareket_detay = new DefaultTableModel(){
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return column > 4 && column < 7;
             }
-
-
         };
 
-        Object[] columns_hareketDetay = {"ID","URUN ID","ÜRÜN İSİM","ÜRÜN KOD","MİKTAR","BİRİM","BİRİM FİYAT","TUTAR"};
+        Object[] columns_hareketDetay = {"ID","URUN ID","ÜRÜN İSİM","ÜRÜN KOD","BİRİM","MİKTAR","BİRİM FİYAT","TUTAR"};
         mdl_hareket_detay.setColumnIdentifiers(columns_hareketDetay);
         hareketDetay_row_list = new Object[columns_hareketDetay.length];
         tbl_hareketler.setModel(mdl_hareket_detay);
 
-
         tbl_hareketler.getTableHeader().setReorderingAllowed(false);
-        tbl_hareketler.getColumnModel().getColumn(0).setMinWidth(0);
-        tbl_hareketler.getColumnModel().getColumn(0).setWidth(0);
-        tbl_hareketler.getColumnModel().getColumn(0).setMaxWidth(0);
+        TableHelper.tableConfigIdAndReorderAndSelection(tbl_hareketler,0,true,false,true);
         tbl_hareketler.getColumnModel().getColumn(1).setMinWidth(0);
         tbl_hareketler.getColumnModel().getColumn(1).setWidth(0);
         tbl_hareketler.getColumnModel().getColumn(1).setMaxWidth(0);
-        tbl_hareketler.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbl_hareketler.setAutoCreateRowSorter(true);
-        tbl_hareketler.getTableHeader().setReorderingAllowed(false);
+        tbl_hareketler.getModel().addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent e) {
+                if (e.getType() == TableModelEvent.UPDATE) {
+
+                    int row = e.getFirstRow();
+                    int col = e.getColumn();
+                    try {
+                        if(col ==5 || col == 6){
+                            float miktar = Float.parseFloat(tbl_hareketler.getValueAt(row, 5).toString());
+                            float birim_fiyat = Float.parseFloat(tbl_hareketler.getValueAt(row, 6).toString());
+                            calculateTotalTable(miktar, birim_fiyat, row);
+                            calculateTotal();
+                        }
+                    } catch (NumberFormatException ex) {
+                        System.err.println("Sayısal bir değer bekleniyor.");
+                    }
+                }
+            }
+        });
+
 
         // hareket detay tablo ---------------------
 
@@ -101,19 +117,10 @@ public class HareketDetayGUI extends JFrame {
             calculateTotal();
             initComboBoxes();
             UIPages.disableAllFields(wrapper,false);
-
         }else{
             setTitle("Hareket Ekle");
             initComboBoxes();
         }
-
-
-
-
-
-
-
-
         btn_cari_kayit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -126,7 +133,6 @@ public class HareketDetayGUI extends JFrame {
             }
         });
 
-
         cmb_cari.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -135,8 +141,7 @@ public class HareketDetayGUI extends JFrame {
                 }
             }
         });
-
-
+        
         check_bugun.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -178,9 +183,21 @@ public class HareketDetayGUI extends JFrame {
         btn_urunEkle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new UrunSecGUI(),thisFrame);
+               UrunSecGUI secilen = (UrunSecGUI) UIPages.newWindow(new UrunSecGUI(),thisFrame);
+               secilen.addWindowListener(new WindowAdapter() {
+                   @Override
+                   public void windowClosed(WindowEvent e) {
+                       ArrayList<Long> secilenler = secilen.getSecilen_urunIDleri();
+                       loadHareketTBL(secilenler);
+
+                   }
+               });
+
+
+
             }
         });
+
     }
 
     private void loadHareketInfo(long id){
@@ -217,7 +234,7 @@ public class HareketDetayGUI extends JFrame {
     }
 
     private void loadHareketTBL(long id){
-        DefaultTableModel clearModel =(DefaultTableModel) tbl_hareketler.getModel();
+        DefaultTableModel clearModel = (DefaultTableModel) tbl_hareketler.getModel();
         clearModel.setRowCount(0);
         Urun urun;
         int i;
@@ -228,21 +245,44 @@ public class HareketDetayGUI extends JFrame {
             hareketDetay_row_list[i++] = hareketDetay.getUrunId();
             hareketDetay_row_list[i++] = urun.getIsim();
             hareketDetay_row_list[i++] = urun.getKod();
-            hareketDetay_row_list[i++] = hareketDetay.getMiktar();
             hareketDetay_row_list[i++] = urun.getBirimKodId();
+            hareketDetay_row_list[i++] = hareketDetay.getMiktar();
             hareketDetay_row_list[i++] = hareketDetay.getBirimFiyat();
             hareketDetay_row_list[i++] = hareketDetay.getTutar();
 
             mdl_hareket_detay.addRow(hareketDetay_row_list);
         }
     }
+    private void loadHareketTBL(ArrayList<Long> ids){
+        // {"ID","URUN ID","ÜRÜN İSİM","ÜRÜN KOD","BİRİM","MİKTAR","BİRİM FİYAT","TUTAR"};
+        for(Long id : ids){
+            Urun urun = UrunServis.getInstance().getById(id);
+            hareketDetay_row_list[1] = urun.getId();
+            hareketDetay_row_list[2] = urun.getIsim();
+            hareketDetay_row_list[3] = urun.getKod();
+            hareketDetay_row_list[4] = urun.getBirimKodId();
+            hareketDetay_row_list[5] = 0;
+            hareketDetay_row_list[6] = 0;
+            hareketDetay_row_list[7] = 0F;
+
+
+
+            mdl_hareket_detay.addRow(hareketDetay_row_list);
+        }
+        
+    }
     private void calculateTotal(){
         float total = 0F;
         for (int i = 0; i < tbl_hareketler.getRowCount(); i++){
-            float amount = (float) tbl_hareketler.getValueAt(i, tbl_hareketler.getColumnCount()-1);
+            float amount = Float.parseFloat(tbl_hareketler.getValueAt(i, tbl_hareketler.getColumnCount()-1).toString());
             total += amount;
         }
         lbl_tutar_hesaplanmis.setText(String.valueOf(total));
+    }
+
+    private void calculateTotalTable(float miktar, float birim_fiyat, int row) {
+        float tutar = miktar * birim_fiyat;
+        tbl_hareketler.setValueAt(String.valueOf(tutar), row, 7);
     }
 
 

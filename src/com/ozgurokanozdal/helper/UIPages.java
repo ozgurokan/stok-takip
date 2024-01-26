@@ -15,20 +15,22 @@ public class UIPages {
         int y = (int) ((dimension.getHeight() - frame.getHeight()) / 2);
         frame.setLocation(x,y);
         frame.setVisible(true);
+
     }
 
 
-    public static JFrame newWindow(JFrame frameChild,JFrame frameParent){
+    public static JFrame newWindow(JFrame frameChild, JFrame frameParent){
         centeredFrame(frameChild);
         frameChild.addWindowListener(new WindowListener() {
             @Override
             public void windowOpened(WindowEvent e) {
                 frameParent.setEnabled(false);
+
             }
 
             @Override
             public void windowClosing(WindowEvent e) {
-                frameParent.setEnabled(true);
+                frameParent.setEnabled(false);
             }
 
             @Override
@@ -39,6 +41,7 @@ public class UIPages {
             @Override
             public void windowIconified(WindowEvent e) {
                 frameParent.setEnabled(false);
+
             }
 
             @Override
@@ -56,6 +59,7 @@ public class UIPages {
                 frameParent.setEnabled(false);
             }
         });
+
 
         return frameChild;
     }

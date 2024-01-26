@@ -80,6 +80,10 @@ public class HareketServis {
 
     }
 
+    public boolean create(){
+        return true;
+    }
+
 
 
 }
