@@ -3,6 +3,7 @@ package com.ozgurokanozdal.services;
 import com.ozgurokanozdal.config.DBConnector;
 import com.ozgurokanozdal.entity.HareketDetay;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -47,8 +48,25 @@ public class HareketDetayServis {
     }
 
     public boolean create(HareketDetay hareketDetay){
-//        String query = "INSERT INTO hareket_detay"
-        return false;
+        String query = "INSERT INTO hareket_detay (hareket_id,urun_id,miktar,birim_id,birim_fiyat,tutar) VALUES (?,?,?,?,?,?)";
+        try{
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            pr.setLong(1,hareketDetay.getHareketId());
+            pr.setLong(2,hareketDetay.getUrunId());
+            pr.setFloat(3,hareketDetay.getMiktar());
+            pr.setInt(4,hareketDetay.getBirimId());
+            pr.setFloat(5,hareketDetay.getBirimFiyat());
+            pr.setFloat(6, hareketDetay.getTutar());
+
+            int result =  pr.executeUpdate();
+            pr.close();
+
+            return result > -1;
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

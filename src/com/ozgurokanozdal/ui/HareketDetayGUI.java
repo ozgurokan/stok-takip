@@ -2,25 +2,30 @@ package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.entity.Cari;
 import com.ozgurokanozdal.dto.Item;
+import com.ozgurokanozdal.entity.Hareket;
 import com.ozgurokanozdal.entity.HareketDetay;
 import com.ozgurokanozdal.entity.Urun;
 import com.ozgurokanozdal.helper.TableHelper;
+import com.ozgurokanozdal.helper.UIDialog;
 import com.ozgurokanozdal.helper.UIPages;
 import com.ozgurokanozdal.services.CariServis;
 import com.ozgurokanozdal.services.HareketDetayServis;
+import com.ozgurokanozdal.services.HareketServis;
 import com.ozgurokanozdal.services.UrunServis;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
+
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class HareketDetayGUI extends JFrame {
     private JPanel pnl_bt;
@@ -53,7 +58,7 @@ public class HareketDetayGUI extends JFrame {
     private DefaultTableModel mdl_hareket_detay;
     private Object[] hareketDetay_row_list;
 
-    public HareketDetayGUI(int logic, long id){
+    public HareketDetayGUI(int logic, long hareket_id){
         add(wrapper);
         setSize(720,1024);
         setTitle("Hareket Detay");
@@ -107,13 +112,11 @@ public class HareketDetayGUI extends JFrame {
         
         if(logic == 1){
             setTitle("Hareket Değiştir");
-            loadHareketTBL(id);
-            loadHareketInfo(id);
+            loadHareketTBL(hareket_id);
             calculateTotal();
         } else if (logic == 2) {
             setTitle("Hareket Detay");
-            loadHareketInfo(id);
-            loadHareketTBL(1);
+            loadHareketTBL(hareket_id);
             calculateTotal();
             initComboBoxes();
             UIPages.disableAllFields(wrapper,false);
@@ -198,13 +201,42 @@ public class HareketDetayGUI extends JFrame {
             }
         });
 
+        btn_ekle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(UIDialog.confirm("sure")){
+
+                    Hareket hareket = new Hareket();
+                    hareket.setCari_id(cmb_cari.getItemAt(cmb_cari.getSelectedIndex()).getKey());
+                    hareket.setTarih(Date.valueOf(fld_tarih.getText()));
+                    hareket.setSaat(Time.valueOf(fld_saat.getText()));
+                    hareket.setTur(cmb_hareketTur.getItemAt(cmb_hareketTur.getSelectedIndex()).getKey());
+                    hareket.setTutar(Float.parseFloat(lbl_tutar_hesaplanmis.getText()));
+                    int result = HareketServis.getInstance().create(hareket);
+                    if(result > -1){
+                        for(int i = 0; i < mdl_hareket_detay.getRowCount(); i++){
+                            HareketDetay hareketDetay = new HareketDetay();
+                            hareketDetay.setHareketId(result);
+                            hareketDetay.setUrunId(Integer.parseInt(mdl_hareket_detay.getValueAt(i,1).toString()));
+                            hareketDetay.setBirimId(Integer.parseInt(mdl_hareket_detay.getValueAt(i,4).toString()));
+                            hareketDetay.setMiktar(Float.parseFloat(mdl_hareket_detay.getValueAt(i,5).toString()));
+                            hareketDetay.setBirimFiyat(Float.parseFloat(mdl_hareket_detay.getValueAt(i,6).toString()));
+                            hareketDetay.setTutar(Float.parseFloat(mdl_hareket_detay.getValueAt(i,7).toString()));
+                            HareketDetayServis.getInstance().create(hareketDetay);
+                        }
+
+                    }
+
+
+                }
+            }
+        });
     }
 
     private void loadHareketInfo(long id){
 
-
-
-
+        
     }
 
     private void loadCariInfo(long id){

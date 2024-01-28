@@ -6,7 +6,7 @@ import java.sql.Time;
 public class Hareket {
 
     private long id;
-    private int cari_id;
+    private long cari_id;
     private Date tarih;
     private Time saat;
     private int tur;
@@ -18,7 +18,7 @@ public class Hareket {
 
     }
 
-    public Hareket(long id,int cari_id,Date tarih, Time saat,int tur,float tutar){
+    public Hareket(long id,long cari_id,Date tarih, Time saat,int tur,float tutar){
         this.id = id;
         this.cari_id = cari_id;
         this.tarih = tarih;
@@ -37,11 +37,11 @@ public class Hareket {
         this.id = id;
     }
 
-    public int getCari_id() {
+    public long getCari_id() {
         return cari_id;
     }
 
-    public void setCari_id(int cari_id) {
+    public void setCari_id(long cari_id) {
         this.cari_id = cari_id;
     }
 

@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.sql.Time;
 
 public class TableHareket {
+
     private long id;
+    private long cari_id;
     private String cariAd;
     private Date tarih;
     private Time saat;
@@ -14,8 +16,9 @@ public class TableHareket {
     public TableHareket(){
 
     }
-    public TableHareket(long id, String cariAd, Date tarih, Time saat, int tur, float tutar) {
+    public TableHareket(long id,long cari_id, String cariAd, Date tarih, Time saat, int tur, float tutar) {
         this.id = id;
+        this.cari_id = cari_id;
         this.cariAd = cariAd;
         this.tarih = tarih;
         this.saat = saat;
@@ -29,6 +32,14 @@ public class TableHareket {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getCari_id(){
+        return cari_id;
+    }
+
+    public void setCari_id(Long cari_id){
+        this.cari_id = cari_id;
     }
 
     public String getCariAd() {

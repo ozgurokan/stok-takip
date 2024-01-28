@@ -45,7 +45,7 @@ public class HareketlerGUI extends JFrame {
             }
         };
 
-        Object[] hareket_tbl_cols = {"ID","CARI NO", "TARIH", "SAAT","TÜR", "TUTAR"};
+        Object[] hareket_tbl_cols = {"ID","CARI HESAP", "TARIH", "SAAT","TÜR", "TUTAR"};
         hareket_tbl_model.setColumnIdentifiers(hareket_tbl_cols);
         hareketler_tbl_rows = new Object[hareket_tbl_cols.length];
         loadHareket();
@@ -109,7 +109,7 @@ public class HareketlerGUI extends JFrame {
         DefaultTableModel clearModel = (DefaultTableModel) tbl_hareketler.getModel();
         clearModel.setRowCount(0);
         int i;
-        for(TableHareket hareket : HareketServis.getInstance().getAll()){
+        for(TableHareket hareket : HareketServis.getInstance().getAllForTable()){
             i=0;
             hareketler_tbl_rows[i++] = hareket.getId();
             hareketler_tbl_rows[i++] = hareket.getCariAd();
