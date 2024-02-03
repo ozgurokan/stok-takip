@@ -14,7 +14,6 @@ public class KategoriServis {
 
     private static KategoriServis kategoriServis;
 
-
     private KategoriServis(){
 
     }

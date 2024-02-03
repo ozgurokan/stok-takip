@@ -1,6 +1,7 @@
 package com.ozgurokanozdal.ui;
 
 import com.ozgurokanozdal.entity.Cari;
+import com.ozgurokanozdal.helper.TableHelper;
 import com.ozgurokanozdal.helper.UIPages;
 import com.ozgurokanozdal.services.CariServis;
 
@@ -8,6 +9,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class CariHesaplarGUI extends JFrame {
     private JPanel wrapper;
@@ -24,7 +27,7 @@ public class CariHesaplarGUI extends JFrame {
     DefaultTableModel mdl_cariHesaplar;
     Object[] row_list_cariHesaplar;
 
-    private Integer id;
+    private long selectedId;
     public CariHesaplarGUI(){
         add(wrapper);
         setSize(960,480);
@@ -43,22 +46,52 @@ public class CariHesaplarGUI extends JFrame {
         Object[] columns_cariHesaplar = {"ID","KOD","İSİM","VERGİ NO.","VERGİ DAİRESİ", "ADRES","İLETİŞİM NO"};
         mdl_cariHesaplar.setColumnIdentifiers(columns_cariHesaplar);
         tbl_cariHesaplar.setModel(mdl_cariHesaplar);
-
         row_list_cariHesaplar = new Object[columns_cariHesaplar.length];
 
-        tbl_cariHesaplar.getColumnModel().getColumn(0).setMinWidth(0);
-        tbl_cariHesaplar.getColumnModel().getColumn(0).setWidth(0);
-        tbl_cariHesaplar.getColumnModel().getColumn(0).setMaxWidth(0);
-        tbl_cariHesaplar.setSelectionMode(0);
+        TableHelper.tableConfigIdAndReorderAndSelection(tbl_cariHesaplar,0,true,false,true);
         tbl_cariHesaplar.setAutoCreateRowSorter(true);
 
+        tbl_cariHesaplar.getSelectionModel().addListSelectionListener(e -> {
+
+            try{
+                selectedId = (long) tbl_cariHesaplar.getValueAt(tbl_cariHesaplar.getSelectedRow(),0);
+            }catch (RuntimeException r){
+
+            }
+
+
+        });
+
         loadCariTBL();
-        tbl_cariHesaplar.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 
         btn_ekle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new CariDetayGUI(0),thisFrame);
+                UIPages.newWindow(new CariDetayGUI(0,0),thisFrame).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        loadCariTBL();
+                    }
+                });
+            }
+        });
+
+        btn_degistir.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UIPages.newWindow(new CariDetayGUI(1, selectedId),thisFrame).addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosing(WindowEvent e) {
+                        loadCariTBL();
+                    }
+                });
+            }
+        });
+
+        btn_incele.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                UIPages.newWindow(new CariDetayGUI(2, selectedId),thisFrame);
             }
         });
     }
@@ -67,6 +100,7 @@ public class CariHesaplarGUI extends JFrame {
     public void loadCariTBL(){
         DefaultTableModel clearModel =(DefaultTableModel) tbl_cariHesaplar.getModel();
         clearModel.setRowCount(0);
+
         int i;
         for(Cari cari : CariServis.getInstance().getAll(false)){
             i=0;

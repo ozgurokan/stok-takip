@@ -30,33 +30,29 @@ public class UIPages {
 
             @Override
             public void windowClosing(WindowEvent e) {
-                frameParent.setEnabled(false);
-            }
-
-            @Override
-            public void windowClosed(WindowEvent e) {
                 frameParent.setEnabled(true);
             }
 
             @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
             public void windowIconified(WindowEvent e) {
-                frameParent.setEnabled(false);
 
             }
 
             @Override
             public void windowDeiconified(WindowEvent e) {
-                frameParent.setEnabled(false);
             }
 
             @Override
             public void windowActivated(WindowEvent e) {
-                frameParent.setEnabled(false);
             }
 
             @Override
             public void windowDeactivated(WindowEvent e) {
-                frameParent.setEnabled(false);
             }
         });
 
@@ -121,6 +117,8 @@ public class UIPages {
                 component.setEnabled(isEnabled);
             } else if (component instanceof  JCheckBox) {
                 component.setEnabled(isEnabled);
+            } else if (component instanceof  JTextPane) {
+                ((JTextPane) component).setEditable(isEnabled);
             }
 
         }

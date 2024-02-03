@@ -46,12 +46,6 @@ public class UrunSecGUI extends JFrame {
 
         Object[] columns_tables = {"ID","DURUM","KOD","STOK ADI", "ANA KATEGORİ","ALT KATEGORİ", "URETICI", "KDV"};
 
-        thisFrame.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                thisFrame.setVisible(false);
-            }
-        });
         // URUNLER TABLOSU
         mdl_urunler = new DefaultTableModel(){
             @Override
@@ -151,8 +145,9 @@ public class UrunSecGUI extends JFrame {
                 });
             }
         });
+
         btn_kaydet.addActionListener(e -> {
-            thisFrame.dispose();
+            thisFrame.dispatchEvent(new WindowEvent(thisFrame,WindowEvent.WINDOW_CLOSING));
         });
     }
 

@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 public class UrunKontrolGUI extends JFrame {
@@ -101,7 +102,7 @@ public class UrunKontrolGUI extends JFrame {
         setSize(1200,720);
         setMinimumSize(new Dimension(1200,720));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+        UrunKontrolGUI thisFrame = this;
 
         initComboBoxes();
         cmb_odemeTip.setSelectedIndex(2);
@@ -153,8 +154,7 @@ public class UrunKontrolGUI extends JFrame {
 
                     UrunServis.getInstance().create(urunToSave);
                     UIDialog.showMessage("done");
-                    setVisible(false);
-                    dispose();
+                    thisFrame.dispatchEvent(new WindowEvent(thisFrame,WindowEvent.WINDOW_CLOSING));
                     }catch (RuntimeException a){
                         UIDialog.showMessage("error");
                         throw new RuntimeException(a);
@@ -186,8 +186,7 @@ public class UrunKontrolGUI extends JFrame {
 
                         UrunServis.getInstance().updateById(id,urunToUpdate);
                         UIDialog.showMessage("Güncelleme İşlemi Başarılı");
-                        setVisible(false);
-                        dispose();
+                        thisFrame.dispatchEvent(new WindowEvent(thisFrame,WindowEvent.WINDOW_CLOSING));
                     }catch (RuntimeException a){
                         UIDialog.showMessage("Bir Hata Oluştu!");
                         throw new RuntimeException(a);
@@ -202,11 +201,8 @@ public class UrunKontrolGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(UIDialog.confirm("Emin misin?")){
-                    
-                    setVisible(false);
-                    dispose();
+                    thisFrame.dispatchEvent(new WindowEvent(thisFrame,WindowEvent.WINDOW_CLOSING));
                 }
-
             }
         });
 

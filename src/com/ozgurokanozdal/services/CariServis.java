@@ -79,8 +79,29 @@ public class CariServis {
         return cari;
     }
 
-    public boolean add(Cari cari){
+    public boolean updateById(long id,Cari entity){
+        String query = "UPDATE cariler SET kod = ?, isim = ?, vergi_no = ?, vergi_dairesi = ?, adres = ?, tel_no = ? WHERE id = " + id ;
+        try{
+            PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
+            int i = 1;
+            pr.setString(i++,entity.getKod());
+            pr.setString(i++,entity.getIsim());
+            pr.setString(i++,entity.getVergiNo());
+            pr.setString(i++,entity.getVergiDairesi());
+            pr.setString(i++,entity.getAdres());
+            pr.setString(i++,entity.getTel_no());
+
+            int response = pr.executeUpdate();
+            pr.close();
+            return response != -1;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean create(Cari cari){
         String query = "INSERT INTO cariler(kod,isim,vergi_no,vergi_dairesi,adres,tel_no) VALUES (?,?,?,?,?,?)";
+
         try{
             PreparedStatement pr = DBConnector.getInstance().prepareStatement(query);
             pr.setString(1, cari.getKod());
@@ -90,7 +111,10 @@ public class CariServis {
             pr.setString(5, cari.getAdres());
             pr.setString(6, cari.getTel_no());
 
-            return pr.executeUpdate() != -1;
+
+            int response = pr.executeUpdate();
+            pr.close();
+            return response != -1;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -12,9 +12,7 @@ public class TableHareket {
     private Time saat;
     private int tur;
     private float tutar;
-
     public TableHareket(){
-
     }
     public TableHareket(long id,long cari_id, String cariAd, Date tarih, Time saat, int tur, float tutar) {
         this.id = id;

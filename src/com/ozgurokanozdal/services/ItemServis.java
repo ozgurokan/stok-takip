@@ -25,7 +25,6 @@ public class ItemServis {
         return itemServis;
     }
 
-
     public List<OdemeTip> getAllOdemeTip() {
         String query = "SELECT * FROM odeme_tip";
         List<OdemeTip> items = new ArrayList<>();
@@ -50,7 +49,6 @@ public class ItemServis {
     }
 
 
-    // BURAYA POLYMORPHISM UYGULAYIP TEK METHODA DÜŞÜREBİLİRİM. NASIL İBLİYO MUSUN VERİLEN BİR KEY'E GÖRE FARKLLI INSTENCELAR OLUŞTURURUM. BURAYA DÖN ! VE DÜŞÜN.
     public List<BarkodTip> getAllBarkodTip(){
         String query = "SELECT * FROM barkod_tip";
         List<BarkodTip> items = new ArrayList<>();

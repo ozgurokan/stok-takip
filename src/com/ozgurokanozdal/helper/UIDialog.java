@@ -21,6 +21,10 @@ public class UIDialog {
                 msg = "Bir Hata Oluştu!";
                 title = "HATA!";
             }
+            case "fillReq" ->{
+                msg = "Zorunlu alanları doldurun!";
+                title = "Eksik Bilgi!";
+            }
             default -> {
                 msg = str;
                 title = "Mesaj";

@@ -27,8 +27,6 @@ public class HareketServis {
     }
 
 
-
-
     public List<TableHareket> getAllForTable(){
         List<TableHareket> hareketler = new ArrayList<>();
         String query = "SELECT hareketler.*, cariler.isim FROM hareketler INNER JOIN cariler ON hareketler.cari_id = cariler.id ";

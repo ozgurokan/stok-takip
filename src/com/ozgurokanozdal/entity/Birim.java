@@ -8,7 +8,6 @@ public class Birim {
 
     public Birim() {
     }
-
     public Birim(int id, String name, String code) {
         this.id = id;
         this.name = name;

@@ -127,7 +127,7 @@ public class HareketDetayGUI extends JFrame {
         btn_cari_kayit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                UIPages.newWindow(new CariDetayGUI(0),thisFrame).addWindowListener(new WindowAdapter() {
+                UIPages.newWindow(new CariDetayGUI(0,0),thisFrame).addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadCariCMB();
