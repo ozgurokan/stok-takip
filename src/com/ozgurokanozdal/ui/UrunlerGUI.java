@@ -51,7 +51,7 @@ public class UrunlerGUI extends JFrame {
             }
         };
 
-        Object[] columns_urunler = {"ID","DURUM","KOD","STOK ADI", "ANA KATEGORİ","ALT KATEGORİ", "URETICI", "KDV"};
+        Object[] columns_urunler = {"ID","DURUM","KOD","STOK ADI", "ANA KATEGORİ","ALT KATEGORİ", "URETICI", "KDV","STOK"};
         urunler_tbl_mdl.setColumnIdentifiers(columns_urunler);
         urunler_row_list = new Object[columns_urunler.length];
 
@@ -169,7 +169,7 @@ public class UrunlerGUI extends JFrame {
 
     private void loadUrunList(int filterDurum,int filterKategoriAna){
 
-        // "ID","DURUM","KOD","STOK ADI", "ANA KATEGORİ","ALT KATEGORİ", "URETICI", "KDV"
+        // "ID","DURUM","KOD","STOK ADI", "ANA KATEGORİ","ALT KATEGORİ", "URETICI", "KDV", "STOK"
         DefaultTableModel clearModel = (DefaultTableModel) urunler_table.getModel();
         clearModel.setRowCount(0);
         int i;
@@ -183,6 +183,7 @@ public class UrunlerGUI extends JFrame {
             urunler_row_list[i++] = urun.getKategoriAlt();
             urunler_row_list[i++] = urun.getUreticiIsim();
             urunler_row_list[i++] = urun.getKdv();
+            urunler_row_list[i++] = urun.getStok_bilgi();
 
 
 

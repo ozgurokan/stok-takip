@@ -10,11 +10,12 @@ public class TabloUrun {
     private String kategoriAlt;
     private String ureticiIsim;
     private int kdv;
+    private float stok_bilgi;
 
     public TabloUrun() {
     }
 
-    public TabloUrun(long id, String durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv) {
+    public TabloUrun(long id, String durum, String kod, String isim, String kategoriAna, String kategoriAlt, String ureticiIsim, int kdv,float stok_bilgi) {
         this.id = id;
         this.durum = durum;
         this.kod = kod;
@@ -23,6 +24,7 @@ public class TabloUrun {
         this.kategoriAlt = kategoriAlt;
         this.ureticiIsim = ureticiIsim;
         this.kdv = kdv;
+        this.stok_bilgi = stok_bilgi;
     }
 
     public long getId() {
@@ -87,5 +89,13 @@ public class TabloUrun {
 
     public void setKdv(int kdv) {
         this.kdv = kdv;
+    }
+
+    public float getStok_bilgi() {
+        return stok_bilgi;
+    }
+
+    public void setStok_bilgi(float stok_bilgi) {
+        this.stok_bilgi = stok_bilgi;
     }
 }

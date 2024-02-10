@@ -88,7 +88,7 @@ public class UIPages {
 
     }
 
-    public static void disableAllFields(JPanel panel, Boolean isEnabled) {
+    public static void changeFieldsEnable(JPanel panel, Boolean isEnabled) {
 
 
         Component[] components = panel.getComponents();
@@ -96,12 +96,12 @@ public class UIPages {
         for (Component component : components) {
 
             if (component instanceof JPanel) {
-                disableAllFields((JPanel) component, isEnabled);
+                changeFieldsEnable((JPanel) component, isEnabled);
             }
             if( component instanceof JTabbedPane){
                 Component[] components1 = ((JTabbedPane) component).getComponents();
                 for(Component component1 : components1){
-                    disableAllFields((JPanel) component1, isEnabled);
+                    changeFieldsEnable((JPanel) component1, isEnabled);
                 }
             }
             if(component instanceof JTextField){

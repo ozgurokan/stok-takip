@@ -60,10 +60,10 @@ public class UrunServis implements IServis<Urun,Long> {
 
         String filterDurumSTR = filterDurum == 1 ? "A" : "P";
 
-        String query = "SELECT urunler.id,durum,urunler.kod,isim,kategori_ana_isim,kategori_alt_isim,uretici.name,kdv FROM stok_takip.urunler "+
+        String query = "SELECT urunler.id,durum,urunler.kod,isim,kategori_ana_isim,kategori_alt_isim,uretici.name,kdv,stok FROM stok_takip.urunler "+
                 "INNER JOIN kategori_alt ON kategori_alt_id = kategori_alt.id "+
                 "INNER JOIN kategori_ana ON kategori_ana_id = kategori_ana.id "+
-                "INNER JOIN uretici On uretici_id = uretici.id";
+                "INNER JOIN uretici On uretici_id = uretici.id INNER JOIN stok_bilgileri ON urunler.id = stok_bilgileri.ID";
 
         StringBuilder QUERY = new StringBuilder(query);
 
@@ -91,7 +91,7 @@ public class UrunServis implements IServis<Urun,Long> {
                 TabloUrun tabloUrun = new TabloUrun(
                         rs.getInt(i++),rs.getString(i++),
                         rs.getString(i++),rs.getString(i++),rs.getString(i++),
-                        rs.getString(i++),rs.getString(i++),rs.getInt(i++)
+                        rs.getString(i++),rs.getString(i++),rs.getInt(i++),rs.getFloat(i++)
                 );
                 urunler.add(tabloUrun);
 

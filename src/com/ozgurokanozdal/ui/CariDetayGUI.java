@@ -43,7 +43,7 @@ public class CariDetayGUI extends JFrame{
             btn_ekle.setVisible(false);
             btn_duzenle.setVisible(false);
             fillFields(cariId);
-            UIPages.disableAllFields(wrapper,false);
+            UIPages.changeFieldsEnable(wrapper,false);
         }else{
             setTitle("Cari Kayıt Ekle");
             btn_duzenle.setVisible(false);

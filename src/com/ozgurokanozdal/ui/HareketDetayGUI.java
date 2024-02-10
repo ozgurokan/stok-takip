@@ -25,7 +25,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class HareketDetayGUI extends JFrame {
     private JPanel pnl_bt;
@@ -119,7 +118,7 @@ public class HareketDetayGUI extends JFrame {
             loadHareketTBL(hareket_id);
             calculateTotal();
             initComboBoxes();
-            UIPages.disableAllFields(wrapper,false);
+            UIPages.changeFieldsEnable(wrapper,false);
         }else{
             setTitle("Hareket Ekle");
             initComboBoxes();
